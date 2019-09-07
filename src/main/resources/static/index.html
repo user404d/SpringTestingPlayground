@@ -1,0 +1,53 @@
+<html>
+<body onload="callServer()">
+<p>Hello from static page</p>
+<script>
+function callServer() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("outputRaw").innerHTML += this.responseText
+      var listings = JSON.parse(this.responseText);
+      for (i in listings) {
+        var listingDiv = listingLine(listings[i]);
+        document.getElementById("output").appendChild(listingDiv);
+      }
+    }
+  };
+  xhttp.open("GET", "/listings", true);
+  xhttp.send();
+}
+
+function listingLine(listing) {
+  var listingMainElement = document.createElement("DIV");
+
+  addDataSpan(listingMainElement, listing.numberOfOwners);
+  addDataSpan(listingMainElement, listing.vin);
+  addDataSpan(listingMainElement, listing.price);
+  addDataSpan(listingMainElement, listing.numberOfLikes);
+  addDataSpan(listingMainElement, listing.numberOfAccidents);
+  addDataSpan(listingMainElement, listing.make);
+  addDataSpan(listingMainElement, listing.model);
+  addDataSpan(listingMainElement, listing.year);
+
+
+  var button = document.createElement("BUTTON");
+  button.innerHTML = "Like";
+  button.id = listing.vin;
+  button.onclick = function() {alert(listing.vin);};
+
+  listingMainElement.appendChild(button);
+  return listingMainElement;
+}
+
+function addDataSpan(parentDiv, contents) {
+  var dataSpan = document.createElement("SPAN");
+  dataSpan.innerHTML = contents+" &nbsp;";
+  parentDiv.appendChild(dataSpan);
+}
+
+</script>
+<div id="output"></div>
+<div id="outputRaw"></div>
+</body>
+</html>
