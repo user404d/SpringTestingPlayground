@@ -1,9 +1,12 @@
 package hello;
 
 import domain.Listing;
+import clients.UserClient;
+import domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +17,7 @@ import java.util.List;
 public class HomeController {
 
   @Autowired ThirdPartyClient thirdPartyClient;
-  @RequestMapping("/")
+  @RequestMapping("/static")
   public @ResponseBody
   String greeting() {
       return "Hello world from "+thirdPartyClient.get();
@@ -30,5 +33,13 @@ public class HomeController {
     result.add(listing2);
     return result; //"{\"items\":[{\"vin\":\"3GYFNDE31CS645298\"},{\"vin\":\"4T1BG22K9VU173249\"}]}";
   }
+
+    @RequestMapping("/user")
+
+    public @ResponseBody
+    String user(@RequestParam(required = false) String user) {
+        User fromDatabase = new UserClient().get(user);
+        return "Hello world from " + fromDatabase.getName();
+    }
 
 }

@@ -27,8 +27,15 @@ public class HttpRequestTest {
 
     @Test
     public void greetingShouldReturnDefaultMessage() {
-        String result = restTemplate.getForObject("http://localhost:"+port+"/", String.class);
+        String result = restTemplate.getForObject("http://localhost:"+port+"/static", String.class);
         System.out.println(result);
         assertEquals("Hello world", result);
+    }
+
+    @Test
+    public void userShouldReturnUser() {
+        String result = restTemplate.getForObject("http://localhost:"+port+"/user?user=John", String.class);
+        System.out.println(result);
+        assertEquals("Hello world from John", result);
     }
 }
