@@ -1,0 +1,12 @@
+plugins {
+    id 'groovy'
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:2.4.15'
+}
+
+bootJar {
+    baseName = 'listings'
+    version =  '0.1.0'
+}

@@ -1,6 +1,14 @@
 package domain;
 
 public class Listing {
+    public void setVin(String vin) {
+        this.vin = vin;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     private String vin;
     private String make;
     private String model;
@@ -18,6 +26,10 @@ public class Listing {
     }
 
     private int numberOfAccidents;
+
+    public Listing() {
+
+    }
 
     public Listing(String vin, String make, String model, String year, int numberOfLikes, int numberOfOwners, int price, int numberOfAccidents) {
         this.vin = vin;

@@ -4,11 +4,15 @@ import domain.Listing;
 import clients.UserClient;
 import domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +30,22 @@ public class HomeController {
   @RequestMapping("/listings")
   public @ResponseBody
   List<Listing> listings() {
+
+    RestTemplate restTemplate = new RestTemplate();
+    ResponseEntity<List<Listing>> response = restTemplate.exchange(
+            "http://localhost:8091/listings/",
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<List<Listing>>(){});
+    List<Listing> rawListings = response.getBody();
+
     List<Listing> result = new ArrayList<>();
-    Listing listing = new Listing("3GYFNDE31CS645298", "FORD", "F-150", "2016", 1, 2, 24000, 77);
-    result.add(listing);
-    Listing listing2 = new Listing("4T1BG22K9VU173249", "CHEVY", "SILERADO", "2013", 2, 1, 16795, 1);
-    result.add(listing2);
-    return result; //"{\"items\":[{\"vin\":\"3GYFNDE31CS645298\"},{\"vin\":\"4T1BG22K9VU173249\"}]}";
+    for (Listing rawListing : rawListings) {
+      Listing listing = new Listing(rawListing.getVin(), "FORD", "F-150", "2016", 1, 2, rawListing.getPrice(), 77);
+      result.add(listing);
+    }
+
+    return result;
   }
 
     @RequestMapping("/user")

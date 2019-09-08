@@ -1,2 +1,3 @@
-rootProject.name = 'SpringTestingPlayground'
+rootProject.name = 'testing-playground'
 
+include 'vinkenstein', 'listings'
