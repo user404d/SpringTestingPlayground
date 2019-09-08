@@ -7,13 +7,16 @@ function callServer() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("outputRaw").innerHTML += this.responseText
-      var listings = JSON.parse(this.responseText);
+      var assessment = JSON.parse(this.responseText);
+      var listings = assessment.comparables
       for (i in listings) {
-        var listingDiv = listingLine(listings[i]);
-        document.getElementById("output").appendChild(listingDiv);
-      }
-    }
+        var listingDiv = listingLine(listings[i].listing);
+        addDataSpan(listingDiv, listings[i].similarityScore);
+        document.getElementById("comparables").appendChild(listingDiv);
+      };
+      document.getElementById("assessed-vehicle").appendChild(listingLine(assessment.assessedVehicle));
+      document.getElementById("suggested-price").innerHTML = assessment.suggestedPrice;
+    };
   };
   xhttp.open("GET", "/listings?vin="+vin, true);
   xhttp.send();
@@ -21,23 +24,14 @@ function callServer() {
 
 function listingLine(listing) {
   var listingMainElement = document.createElement("DIV");
-
-  addDataSpan(listingMainElement, listing.numberOfOwners);
   addDataSpan(listingMainElement, listing.vin);
   addDataSpan(listingMainElement, listing.price);
-  addDataSpan(listingMainElement, listing.numberOfLikes);
-  addDataSpan(listingMainElement, listing.numberOfAccidents);
   addDataSpan(listingMainElement, listing.make);
   addDataSpan(listingMainElement, listing.model);
   addDataSpan(listingMainElement, listing.year);
+  addDataSpan(listingMainElement, listing.numberOfOwners);
+  addDataSpan(listingMainElement, listing.numberOfAccidents);
 
-
-  var button = document.createElement("BUTTON");
-  button.innerHTML = "Like";
-  button.id = listing.vin;
-  button.onclick = function() {alert(listing.vin);};
-
-  listingMainElement.appendChild(button);
   return listingMainElement;
 }
 
@@ -48,7 +42,13 @@ function addDataSpan(parentDiv, contents) {
 }
 
 </script>
-<div id="output"></div>
-<div id="outputRaw"></div>
+Suggested price: <div id="suggested-price"></div>
+<br>
+Information about assessed vehicle: <div id="assessed-vehicle"></div>
+<br>
+Comparables: <div id="comparables"></div>
+<br>
+
+
 </body>
 </html>

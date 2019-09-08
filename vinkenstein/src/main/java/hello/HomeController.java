@@ -1,8 +1,7 @@
 package hello;
 
-import domain.Listing;
+import domain.*;
 import clients.UserClient;
-import domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -31,31 +30,26 @@ public class HomeController {
 
     @RequestMapping("/listings")
     public @ResponseBody
-    List<Listing> listings(@RequestParam(required = false) String vin) {
+    Assessment listings(@RequestParam(required = true) String vin) {
         RestTemplate restTemplate = new RestTemplate();
-        List<Listing> result = new ArrayList<>();
-        if ((vin == null) || (vin == ""))
-        {
-            ResponseEntity<List<Listing>> response = restTemplate.exchange(
-                    "http://localhost:8091/listings/",
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<Listing>>() {
-                    });
-            List<Listing> rawListings = response.getBody();
-
-
-            for (Listing rawListing : rawListings) {
-                Listing mommy = restTemplate.getForObject("http://localhost:8092/mommy?vin="+rawListing.getVin(), Listing.class);
-                Listing listing = new Listing(rawListing.getVin(), mommy.getMake(), mommy.getModel(), mommy.getYear(), 1, rawListing.getPrice(), 77);
-                result.add(listing);
-            }
-        } else {
-            Listing mommy = restTemplate.getForObject("http://localhost:8092/mommy?vin="+vin, Listing.class);
-            Listing listing = new Listing(vin, mommy.getMake(), mommy.getModel(), mommy.getYear(), 2, 0, 77);
-            result.add(listing);
+        Listing mommy = restTemplate.getForObject("http://localhost:8092/mommy?vin=" + vin, Listing.class);
+        AssessedVehicle assessedVehicle = new AssessedVehicle(vin, mommy.getMake(), mommy.getModel(), mommy.getYear(), 0, 0);
+        ResponseEntity<List<Listing>> response = restTemplate.exchange(
+                "http://localhost:8091/listings/",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Listing>>() {
+                });
+        List<Listing> rawListings = response.getBody();
+        for (Listing rawListing : rawListings) {
+            Listing rawListingMommy = restTemplate.getForObject("http://localhost:8092/mommy?vin=" + rawListing.getVin(), Listing.class);
+            rawListing.setMake(rawListingMommy.getMake());
+            rawListing.setModel(rawListingMommy.getModel());
+            rawListing.setYear(rawListingMommy.getYear());
         }
-        return result;
+        PricingEngine pricingEngine = new PricingEngine();
+
+        return pricingEngine.assess(assessedVehicle, rawListings);
     }
 
 
