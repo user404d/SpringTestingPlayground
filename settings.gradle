@@ -1,3 +1,3 @@
 rootProject.name = 'testing-playground'
 
-include 'vinkenstein', 'listings'
+include 'vinkenstein', 'listings', 'mommy'

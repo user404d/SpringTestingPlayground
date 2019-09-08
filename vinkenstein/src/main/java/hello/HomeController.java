@@ -32,10 +32,10 @@ public class HomeController {
     @RequestMapping("/listings")
     public @ResponseBody
     List<Listing> listings(@RequestParam(required = false) String vin) {
+        RestTemplate restTemplate = new RestTemplate();
         List<Listing> result = new ArrayList<>();
         if ((vin == null) || (vin == ""))
         {
-            RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<List<Listing>> response = restTemplate.exchange(
                     "http://localhost:8091/listings/",
                     HttpMethod.GET,
@@ -46,11 +46,13 @@ public class HomeController {
 
 
             for (Listing rawListing : rawListings) {
-                Listing listing = new Listing(rawListing.getVin(), "FORD", "F-150", 2016, 1, rawListing.getPrice(), 77);
+                Listing mommy = restTemplate.getForObject("http://localhost:8092/mommy?vin="+rawListing.getVin(), Listing.class);
+                Listing listing = new Listing(rawListing.getVin(), mommy.getMake(), mommy.getModel(), mommy.getYear(), 1, rawListing.getPrice(), 77);
                 result.add(listing);
             }
         } else {
-            Listing listing = new Listing(vin, "FORD", "F-150", 2099, 2, 0, 77);
+            Listing mommy = restTemplate.getForObject("http://localhost:8092/mommy?vin="+vin, Listing.class);
+            Listing listing = new Listing(vin, mommy.getMake(), mommy.getModel(), mommy.getYear(), 2, 0, 77);
             result.add(listing);
         }
         return result;
