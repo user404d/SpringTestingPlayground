@@ -20,33 +20,42 @@ import java.util.List;
 @RestController
 public class HomeController {
 
-  @Autowired ThirdPartyClient thirdPartyClient;
-  @RequestMapping("/static")
-  public @ResponseBody
-  String greeting() {
-      return "Hello world from "+thirdPartyClient.get();
-  }
+    @Autowired
+    ThirdPartyClient thirdPartyClient;
 
-  @RequestMapping("/listings")
-  public @ResponseBody
-  List<Listing> listings() {
-
-    RestTemplate restTemplate = new RestTemplate();
-    ResponseEntity<List<Listing>> response = restTemplate.exchange(
-            "http://localhost:8091/listings/",
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<List<Listing>>(){});
-    List<Listing> rawListings = response.getBody();
-
-    List<Listing> result = new ArrayList<>();
-    for (Listing rawListing : rawListings) {
-      Listing listing = new Listing(rawListing.getVin(), "FORD", "F-150", "2016", 1, 2, rawListing.getPrice(), 77);
-      result.add(listing);
+    @RequestMapping("/static")
+    public @ResponseBody
+    String greeting() {
+        return "Hello world from " + thirdPartyClient.get();
     }
 
-    return result;
-  }
+    @RequestMapping("/listings")
+    public @ResponseBody
+    List<Listing> listings(@RequestParam(required = false) String vin) {
+        List<Listing> result = new ArrayList<>();
+        if ((vin == null) || (vin == ""))
+        {
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<List<Listing>> response = restTemplate.exchange(
+                    "http://localhost:8091/listings/",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Listing>>() {
+                    });
+            List<Listing> rawListings = response.getBody();
+
+
+            for (Listing rawListing : rawListings) {
+                Listing listing = new Listing(rawListing.getVin(), "FORD", "F-150", 2016, 1, rawListing.getPrice(), 77);
+                result.add(listing);
+            }
+        } else {
+            Listing listing = new Listing(vin, "FORD", "F-150", 2099, 2, 0, 77);
+            result.add(listing);
+        }
+        return result;
+    }
+
 
     @RequestMapping("/user")
 

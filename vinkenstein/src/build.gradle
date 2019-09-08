@@ -1,6 +1,0 @@
-bootJar {
-    baseName = 'vinkenstein'
-    version =  '0.1.0'
-}
-
-
