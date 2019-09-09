@@ -17,6 +17,14 @@ class AssessedVehicle {
     }
     protected String model;
     protected int year;
+
+    void setNumberOfAccidents(int numberOfAccidents) {
+        this.numberOfAccidents = numberOfAccidents
+    }
+
+    void setNumberOfOwners(int numberOfOwners) {
+        this.numberOfOwners = numberOfOwners
+    }
     protected int numberOfAccidents;
     protected int numberOfOwners;
     AssessedVehicle() {

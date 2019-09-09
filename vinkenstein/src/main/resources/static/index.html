@@ -1,5 +1,7 @@
 <html>
+<head><title>Vinkenstein pricing engine</title></head>
 <body>
+<h1>Vinkenstein pricing engine</h1>
 <form>Enter a VIN of the vehicle you are trying to price: <input type="text" name="vin" id="vin_field"><button type="button" onclick="callServer()">Price it!</button></form>
 <script>
 function callServer() {
@@ -18,7 +20,7 @@ function callServer() {
       document.getElementById("suggested-price").innerHTML = assessment.suggestedPrice;
     };
   };
-  xhttp.open("GET", "/listings?vin="+vin, true);
+  xhttp.open("GET", "/assessment?vin="+vin, true);
   xhttp.send();
 }
 
@@ -48,7 +50,8 @@ Information about assessed vehicle: <div id="assessed-vehicle"></div>
 <br>
 Comparables: <div id="comparables"></div>
 <br>
-
+<br>
+<p>Example vins: WBSBG9321VEY74382, 1FM5K8F82EGA64580</p>
 
 </body>
 </html>

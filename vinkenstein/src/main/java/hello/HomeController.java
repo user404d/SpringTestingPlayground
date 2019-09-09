@@ -28,12 +28,13 @@ public class HomeController {
         return "Hello world from " + thirdPartyClient.get();
     }
 
-    @RequestMapping("/listings")
+    @RequestMapping("/assessment")
     public @ResponseBody
-    Assessment listings(@RequestParam(required = true) String vin) {
+    Assessment assessment(@RequestParam(required = true) String vin) {
         RestTemplate restTemplate = new RestTemplate();
         Listing mommy = restTemplate.getForObject("http://localhost:8092/mommy?vin=" + vin, Listing.class);
-        AssessedVehicle assessedVehicle = new AssessedVehicle(vin, mommy.getMake(), mommy.getModel(), mommy.getYear(), 0, 0);
+        Listing history = restTemplate.getForObject("http://localhost:8093/history?vin=" + vin, Listing.class);
+        AssessedVehicle assessedVehicle = new AssessedVehicle(vin, mommy.getMake(), mommy.getModel(), mommy.getYear(), history.getNumberOfAccidents(), history.getNumberOfOwners());
         ResponseEntity<List<Listing>> response = restTemplate.exchange(
                 "http://localhost:8091/listings/",
                 HttpMethod.GET,
@@ -46,6 +47,10 @@ public class HomeController {
             rawListing.setMake(rawListingMommy.getMake());
             rawListing.setModel(rawListingMommy.getModel());
             rawListing.setYear(rawListingMommy.getYear());
+
+            Listing rawListingHistory = restTemplate.getForObject("http://localhost:8093/history?vin=" + rawListing.getVin(), Listing.class);
+            rawListing.setNumberOfOwners(rawListingHistory.getNumberOfOwners());
+            rawListing.setNumberOfAccidents(rawListingHistory.getNumberOfAccidents());
         }
         PricingEngine pricingEngine = new PricingEngine();
 
