@@ -4,7 +4,9 @@ class ComparableListing {
     private Listing listing;
     private int similarityScore;
 
-    ComparableListing(Listing listing, int similarityScore) {
+    public ComparableListing(){}
+
+    public ComparableListing(Listing listing, int similarityScore) {
         this.listing = listing
         this.similarityScore = similarityScore
     }

@@ -11,17 +11,25 @@ function callServer() {
     if (this.readyState == 4 && this.status == 200) {
       var assessment = JSON.parse(this.responseText);
       var listings = assessment.comparables
+      clear(document.getElementById("comparables"));
       for (i in listings) {
         var listingDiv = listingLine(listings[i].listing);
         addDataSpan(listingDiv, listings[i].similarityScore);
         document.getElementById("comparables").appendChild(listingDiv);
       };
+      clear(document.getElementById("assessed-vehicle"));
       document.getElementById("assessed-vehicle").appendChild(listingLine(assessment.assessedVehicle));
       document.getElementById("suggested-price").innerHTML = assessment.suggestedPrice;
     };
   };
   xhttp.open("GET", "/assessment?vin="+vin, true);
   xhttp.send();
+}
+
+function clear(node) {
+  while (node.firstChild) {
+    node.removeChild(node.firstChild);
+  }
 }
 
 function listingLine(listing) {
