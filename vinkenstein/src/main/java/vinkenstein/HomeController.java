@@ -1,5 +1,6 @@
 package vinkenstein;
 
+import clients.ListingsClient;
 import domain.*;
 import clients.UserClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class HomeController {
     @Autowired
     ThirdPartyClient thirdPartyClient;
 
+    @Autowired
+    ListingsClient listingsClient;
+
     @RequestMapping("/static")
     public @ResponseBody
     String greeting() {
@@ -33,13 +37,8 @@ public class HomeController {
         Listing mommy = restTemplate.getForObject("http://localhost:8092/mommy?vin=" + vin, Listing.class);
         Listing history = restTemplate.getForObject("http://localhost:8093/history?vin=" + vin, Listing.class);
         AssessedVehicle assessedVehicle = new AssessedVehicle(vin, mommy.getMake(), mommy.getModel(), mommy.getYear(), history.getNumberOfAccidents(), history.getNumberOfOwners());
-        ResponseEntity<List<Listing>> response = restTemplate.exchange(
-                "http://localhost:8091/listings/",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Listing>>() {
-                });
-        List<Listing> rawListings = response.getBody();
+
+        List<Listing> rawListings = listingsClient.getListings();
         for (Listing rawListing : rawListings) {
             Listing rawListingMommy = restTemplate.getForObject("http://localhost:8092/mommy?vin=" + rawListing.getVin(), Listing.class);
             rawListing.setMake(rawListingMommy.getMake());

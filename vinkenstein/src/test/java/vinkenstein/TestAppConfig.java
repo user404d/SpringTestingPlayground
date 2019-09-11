@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 
 @Profile("test")
 @TestConfiguration
-public class TestAppConfig {
+public class TestAppConfig extends AppConfig {
     @Bean
     ThirdPartyClient thirdPartyClient() {
         return new ThirdPartyClient() {
