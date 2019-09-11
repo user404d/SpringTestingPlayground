@@ -1,4 +1,4 @@
-package listings.domain
+package mommy.domain
 
 class Mommy {
     String vin
