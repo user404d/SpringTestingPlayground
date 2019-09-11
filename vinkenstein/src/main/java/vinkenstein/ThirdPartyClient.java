@@ -1,4 +1,4 @@
-package hello;
+package vinkenstein;
 
 public class ThirdPartyClient {
     public String get() {

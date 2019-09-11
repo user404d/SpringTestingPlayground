@@ -1,4 +1,4 @@
-package hello
+package vinkenstein
 
 import geb.Browser
 import org.junit.Test
@@ -8,7 +8,7 @@ import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
-import spock.lang.Specification
+
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes=TestAppConfig.class)
 @ActiveProfiles("test")

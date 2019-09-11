@@ -1,4 +1,4 @@
-package hello;
+package vinkenstein;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
