@@ -27,4 +27,12 @@ public class ListingsClient {
         return response.getBody();
     }
 
+    public void delete(String vin) {
+        restTemplate.delete(url+"/delete?vin="+vin);
+    }
+
+    public void add(Listing listing) {
+        restTemplate.postForObject(url+"/add", listing, String.class);
+    }
+
 }

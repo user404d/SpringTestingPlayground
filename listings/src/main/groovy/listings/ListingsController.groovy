@@ -1,11 +1,13 @@
 package listings
 
 import listings.domain.RawListing
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
@@ -34,8 +36,27 @@ class ListingsController {
 
     @RequestMapping(value="/add", method= RequestMethod.POST)
     public ResponseEntity<Integer> add(@RequestBody RawListing rawListing) {
-        rawListings << rawListing
+        synchronized (rawListings) {
+            RawListing existing = rawListings.find {it.vin == rawListing.vin};
+            println "asked to add: ${rawListing.vin}"
+            if (!existing) {
+                println "did not find, so adding"
+                rawListings << rawListing
+            } else {
+                println "exists, so ignoring"
+            }
+        }
         return new ResponseEntity<>(rawListings.size(),HttpStatus.OK);
     }
 
+    @RequestMapping(value="/delete", method= RequestMethod.DELETE)
+    public ResponseEntity<Integer> delete(@RequestParam (required = true) String vin) {
+        synchronized (rawListings) {
+            RawListing rawListing = rawListings.find {it.vin == vin};
+            if (rawListing != null) {
+                rawListings.remove(rawListing);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

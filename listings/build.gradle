@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:2.4.15'
+    implementation 'org.codehaus.groovy:groovy-all:2.5.8'
 }
 
 bootJar {
