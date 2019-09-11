@@ -17,12 +17,13 @@ import static org.junit.Assert.assertFalse;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes= AppConfig.class)
+@ContextConfiguration(classes = AppConfig.class)
 public class ListingsClientFocusedIntegrationTest {
     @Autowired
     ListingsClient listingsClient;
 
-    @After public void cleanup() {
+    @After
+    public void cleanup() {
         listingsClient.delete("1N4AL11E26N343129");
     }
 
@@ -36,10 +37,6 @@ public class ListingsClientFocusedIntegrationTest {
         assertFalse(listings.stream().filter(listing -> "1N4AL11E26N343129".equals(listing.getVin())).findAny().isPresent());
         listingsClient.add(newListing);
         List<Listing> listingsAfter = listingsClient.getListings();
-        assertTrue(listingsAfter.stream().filter(listing -> "1N4AL11E26N343129".equals(listing.getVin())).findAny().isPresent());
-
-
-        //rawListings << new RawListing(vin: '1FM5K8F82EGA64580', price: 24000)
-        //rawListings << new RawListing(vin: 'WBSBG9321VEY74382', price: 3500)
+        assertEquals(44999, listingsAfter.stream().filter(listing -> "1N4AL11E26N343129".equals(listing.getVin())).findAny().get().getPrice());
     }
 }
