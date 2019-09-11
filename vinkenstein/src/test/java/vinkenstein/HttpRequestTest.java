@@ -33,4 +33,12 @@ public class HttpRequestTest {
         assertTrue(assessment.getComparables().get(0).getListing().getVin() != null);
     }
 
+
+    @Test
+    public void dynamicYearLookupOnAssessedVehicle() {
+        Assessment assessment = restTemplate.getForObject("/assessment?vin=AFM5K8F82EGA64580", Assessment.class);
+        System.out.println(assessment);
+        assertEquals(assessment.getAssessedVehicle().getVin(), "AFM5K8F82EGA64580");
+        assertEquals(assessment.getAssessedVehicle().getYear(), 2014);
+    }
 }
