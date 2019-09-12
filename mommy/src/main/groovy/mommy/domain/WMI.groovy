@@ -1,186 +1,121 @@
 package mommy.domain
 
 class WMI {
-static Map<String, String> lookup = ['':'']
-//    AAV      Volkswagen
-//    South    Africa
-//    AC5      Hyundai South Africa
-//    ADD      Hyundai South Africa
-//    AFA      Ford South Africa
-//    AHT      Toyota South Africa
-//    JA3 Mitsubishi
-//    JA4 Mitsubishi
-//    JA Isuzu
-//    JD Daihatsu
-//    JF Fuji Heavy Industries(Subaru)
-//    JH Honda
-//    JK Kawasaki(motorcycles)
-//    JL5 Mitsubishi Fuso
-//    JM1 Mazda
-//    JMB Mitsubishi Motors
-//    JMY Mitsubishi
-//    Motors
-//    JMZ Mazda
-//    JN Nissan
-//    JS Suzuki
-//    JT Toyota
-//    JY Yamaha(motorcycles)
-//    KL Daewoo
-//    General Motors
-//    South Korea
-//    KM Hyundai
-//    KMY Daelim(motorcycles)
-//    KM1 Hyosung(motorcycles)
-//    KN Kia
-//    KNM Renault Samsung
-//    KPA SsangYong
-//    KPT SsangYong
-//    LAE Jinan
-//    Qingqi Motorcycle
-//    LAN Changzhou
-//    Yamasaki Motorcycle
-//    LBB Zhejiang Qianjiang Motorcycle(Keeway / Generic)
-//    LBE Beijing
-//    Hyundai
-//    LBM Zongshen
-//    Piaggio
-//    LBP Chongqing Jainshe Yamaha(motorcycles)
-//    LB2 Geely
-//    Motorcycles
-//    LCE Hangzhou Chunfeng Motorcycles(CFMOTO)
-//    LDC Dong
-//    Feng Peugeot
-//    Citroen(DPCA) , China
-//    LDD Dandong
-//    Huanghai Automobile
-//    LDF Dezhou Fulu Vehicle(motorcycles)
-//    LDN SouEast
-//    Motor
-//    LDY Zhongtong
-//    Coach , China
-//    LET Jiangling
-//    -Isuzu Motors, China
-//    LE4 Beijing
-//    Benz , China
-//    LFB FAW, China
-//    (busses)
-//    LFG Taizhou
-//    Chuanl Motorcycle
-//    Manufacturing
-//    LFP FAW, China
-//    (passenger vehicles )
-//    LFT FAW, China
-//    (trailers)
-//    LFV FAW
-//    -Volkswagen , China
-//    LFW FAW
-//    JieFang , China
-//    LFY Changshu
-//    Light Motorcycle
-//    Factory
-//    LGB Dong
-//    Feng(DFM) , China
-//    LGH Qoros(formerly Dong Feng (DFM) ), China
-//    LGX BYD
-//    Auto , China
-//    LHB Beijing
-//    Automotive Industry
-//    Holding
-//    LH1 FAW
-//    -Haima , China
-//    LJC JAC, China
-//    LJ1 JAC, China
-//    LKL Suzhou
-//    King Long, China
-//    LL6 Hunan
-//    Changfeng Manufacture
-//    Joint - Stock
-//    LL8 Linhai(ATV)
-//    LMC Suzuki Hong Kong(motorcycles)
-//    LPR Yamaha Hong Kong(motorcycles)
-//    LSG Shanghai
-//    General Motors, China
-//    LSJ MG
-//    Motor UK
-//    Limited - SAIC Motor, Shanghai, China
-//    LSV Shanghai
-//    Volkswagen , China
-//    LSY Brilliance
-//    Zhonghua
-//    LTV Toyota
-//    Tian Jin
-//    LUC Guangqi
-//    Honda , China
-//    LVS Ford
-//    Chang An
-//    LVV Chery, China
-//    LVZ Dong
-//    Feng Sokon Motor Company(DFSK)
-//    LZM MAN
-//    China
-//    LZE Isuzu
-//    Guangzhou , China
-//    LZG Shaanxi
-//    Automobile Group, China
-//    LZP Zhongshan Guochi Motorcycle(Baotian)
-//    LZY Yutong
-//    Zhengzhou , China
-//    LZZ Chongqing
-//    Shuangzing Mech
-//    & Elec(Howo)
-//    L4B Xingyue
-//    Group(motorcycles)
-//    L5C KangDi(ATV)
-//    L5K Zhejiang
-//    Yongkang Easy
-//    Vehicle
-//    L5N Zhejiang
-//    Taotao , China(ATV & motorcycles)
-//    L5Y Merato
-//    Motorcycle Taizhou
-//    Zhongneng
-//    L85 Zhejiang
-//    Yongkang Huabao
-//    Electric Appliance
-//    L8X Zhejiang
-//    Summit Huawin
-//    Motorcycle
-//    MAB Mahindra
-//    & Mahindra
-//    MAC Mahindra
-//    & Mahindra
-//    MAJ Ford
-//    India
-//    MAK Honda
-//    Siel Cars
-//    India
-//    MAL Hyundai
-//    MAT Tata
-//    Motors
-//    MA1 Mahindra
-//    & Mahindra
-//    MA3 Suzuki
-//    India(Maruti)
-//    MA6 GM
-//    India
-//    MA7 Mitsubishi
-//    India(formerly Honda)
-//    MBH Suzuki
-//    India(Maruti)
-//    MBJ Toyota
-//    India
-//    MBR Mercedes
-//    -Benz India
-//    MB1 Ashok
-//    Leyland
-//    MCA Fiat
-//    India
-//    MCB GM
-//    India
-//    MC2 Volvo
-//    Eicher commercial
-//    vehicles limited.
-//            MDH Nissan India
+    static Map<String, String> lookup = [
+            'AAV': 'Volkswagen South Africa',
+            'AC5': 'Hyundai South Africa',
+            'ADD': 'Hyundai South Africa',
+            'AFA': 'Ford South Africa',
+            'AHT': 'Toyota South Africa',
+            'JA3': 'Mitsubishi',
+            'JA4': 'Mitsubishi',
+            'JA' : 'Isuzu',
+            'JD' : 'Daihatsu',
+            'JF' : 'Fuji Heavy Industries(Subaru)',
+            'JH' : 'Honda',
+            'JK' : 'Kawasaki(motorcycles)',
+            'JL5': 'Mitsubishi Fuso',
+            'JM1': 'Mazda',
+            'JMB': 'Mitsubishi Motors',
+            'JMY': 'Mitsubishi Motors',
+            'JMZ': 'Mazda',
+            'JN' : 'Nissan',
+            'JS' : 'Suzuki',
+            'JT' : 'Toyota',
+            'JY' : 'Yamaha(motorcycles)',
+            'KL' : 'Daewoo General Motors South Korea',
+            'KM' : 'Hyundai',
+            'KMY': 'Daelim(motorcycles)',
+            'KM1': 'Hyosung(motorcycles)',
+            'KN' : 'Kia',
+            'KNM': 'Renault Samsung',
+            'KPA': 'SsangYong',
+            'KPT': 'SsangYong',
+            'LAE': 'Jinan Qingqi Motorcycle',
+            'LAN': 'Changzhou Yamasaki Motorcycle',
+            'LBB': 'Zhejiang Qianjiang Motorcycle(Keeway / Generic)',
+            'LBE': 'Beijing Hyundai',
+            'LBM': 'Zongshen Piaggio',
+            'LBP': 'Chongqing Jainshe Yamaha(motorcycles)',
+            'LB2': 'Geely Motorcycles',
+            'LCE': 'Hangzhou Chunfeng Motorcycles(CFMOTO)',
+            'LDC': 'Dong Feng Peugeot Citroen(DPCA) , China',
+            'LDD': 'Dandong Huanghai Automobile',
+            'LDF': 'Dezhou Fulu Vehicle(motorcycles)',
+            'LDN': 'SouEast Motor',
+            'LDY': 'Zhongtong Coach , China',
+            'LET': 'Jiangling-Isuzu Motors, China',
+            'LE4': 'Beijing Benz , China',
+            'LFB': 'FAW, China (busses)',
+            'LFG': 'Taizhou Chuanl Motorcycle Manufacturing',
+            'LFP': 'FAW, China (passenger vehicles )',
+            'LFT': 'FAW, China (trailers)',
+            'LFV': 'FAW Volkswagen, China',
+            'LFW': 'FAW JieFang , China',
+            'LFY': 'Changshu Light Motorcycle Factory',
+            'LGB': 'Dong Feng(DFM) , China',
+            'LGH': 'Qoros(formerly Dong Feng (DFM) ), China',
+            'LGX': 'BYD Auto , China',
+            'LHB': 'Beijing Automotive Industry Holding',
+            'LH1': 'FAW-Haima, China',
+            'LJC': 'JAC, China',
+            'LJ1': 'JAC, China',
+            'LKL': 'Suzhou King Long, China',
+            'LL6': 'Hunan Changfeng Manufacture Joint - Stock',
+            'LL8': 'Linhai(ATV)',
+            'LMC': 'Suzuki Hong Kong(motorcycles)',
+            'LPR': 'Yamaha Hong Kong(motorcycles)',
+            'LSG': 'Shanghai General Motors, China',
+            'LSJ': 'MG Motor UK Limited - SAIC Motor, Shanghai, China',
+            'LSV': 'Shanghai Volkswagen , China',
+            'LSY': 'Brilliance Zhonghua',
+            'LTV': 'Toyota Tian Jin',
+            'LUC': 'Guangqi Honda , China',
+            'LVS': 'Ford Chang An',
+            'LVV': 'Chery, China',
+            'LVZ': 'Dong Feng Sokon Motor Company(DFSK)',
+            'LZM': 'MAN China',
+            'LZE': 'Isuzu Guangzhou , China',
+            'LZG': 'Shaanxi Automobile Group, China',
+            'LZP': 'Zhongshan Guochi Motorcycle(Baotian)',
+            'LZY': 'Yutong Zhengzhou , China',
+            'LZZ': 'Chongqing Shuangzing Mech & Elec(Howo)',
+            'L4B': 'Xingyue Group(motorcycles)',
+            'L5C': 'KangDi(ATV)',
+            'L5K': 'Zhejiang Yongkang Easy Vehicle',
+            'L5N': 'Zhejiang Taotao , China(ATV & motorcycles)',
+            'L5Y': 'Merato Motorcycle Taizhou Zhongneng',
+            'L85': 'Zhejiang Yongkang Huabao Electric Appliance',
+            'L8X': 'Zhejiang Summit Huawin Motorcycle',
+            'MAB': 'Mahindra & Mahindra',
+            'MAC': 'Mahindra & Mahindra',
+            'MAJ': 'Ford India',
+            'MAK': 'Honda Siel Cars India',
+            'MAL': 'Hyundai',
+            'MAT': 'Tata Motors',
+            'MA1': 'Mahindra & Mahindra',
+            'MA3': 'Suzuki India(Maruti)',
+            'MA6': 'GM India',
+            'MA7': 'Mitsubishi India(formerly Honda)',
+            'MBH': 'Suzuki India(Maruti)',
+            'MBJ': 'Toyota India',
+            'MBR': 'Mercedes-Benz India',
+            'MB1': 'Ashok Leyland',
+            'MCA': 'Fiat India',
+            'MCB': 'GM India',
+            'MC2': 'Volvo Eicher commercial vehicles limited.',
+            'MDH': 'Nissan India'
+
+    ]
+
+    public static String get(String vin) {
+        if (vin.length() < 3) {
+            return 'UNKNOWN'
+        } else {
+            return lookup[vin[0..2]] ?: lookup[vin[0..1]]
+        }
+    }
+
 //    MD2 Bajaj
 //    Auto
 //    MD9 Shuttle
@@ -584,7 +519,7 @@ static Map<String, String> lookup = ['':'']
 //    1 H Honda USA
 //    1 HD Harley -Davidson
 //    1 HT International Truck and Engine Corp . USA
-//    1 J4 Jeep
+//    1J4 Jeep
 //    1 J8 Jeep
 //    1L Lincoln USA
 //    1 ME Mercury USA
