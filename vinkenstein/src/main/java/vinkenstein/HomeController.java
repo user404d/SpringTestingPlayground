@@ -2,7 +2,6 @@ package vinkenstein;
 
 import clients.ListingsClient;
 import domain.*;
-import clients.UserClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -52,15 +51,6 @@ public class HomeController {
         PricingEngine pricingEngine = new PricingEngine();
 
         return pricingEngine.assess(assessedVehicle, rawListings);
-    }
-
-
-    @RequestMapping("/user")
-
-    public @ResponseBody
-    String user(@RequestParam(required = false) String user) {
-        User fromDatabase = new UserClient().get(user);
-        return "Hello world from " + fromDatabase.getName();
     }
 
 }
