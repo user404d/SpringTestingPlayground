@@ -3,6 +3,14 @@ package domain
 class Comparison {
     int similarityScore;
 
+    Comparison() {
+    }
+
+    Comparison(Listing comparable, int similarityScore) {
+        this.similarityScore = similarityScore
+        this.comparable = comparable
+    }
+
     boolean getValid() {
         return valid
     }

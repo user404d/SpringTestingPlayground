@@ -30,7 +30,7 @@ public class HttpRequestTest {
         assertEquals(assessment.getAssessedVehicle().getVin(), "WBSBG9321VEY74382");
         assertEquals(assessment.getSuggestedPrice(), 24000);
         assertTrue(assessment.getComparables().size()> 0);
-        assertTrue(assessment.getComparables().get(0).getListing().getVin() != null);
+        assertTrue(assessment.getComparables().get(0).getComparable().getVin() != null);
     }
 
 

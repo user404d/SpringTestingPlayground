@@ -13,8 +13,8 @@ function callServer() {
       var listings = assessment.comparables
       clear(document.getElementById("comparables"));
       for (i in listings) {
-        var listingDiv = listingLine(listings[i].listing);
-        addDataSpan(listingDiv, listings[i].similarityScore);
+        var listingDiv = listingLine(listings[i].comparable);
+        addDataSpan(listingDiv, listings[i].priceDifferenceFromAssessed);
         document.getElementById("comparables").appendChild(listingDiv);
       };
       clear(document.getElementById("assessed-vehicle"));

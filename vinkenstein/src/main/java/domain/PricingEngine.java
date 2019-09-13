@@ -7,7 +7,7 @@ public class PricingEngine {
         Assessment result = new Assessment();
         result.setAssessedVehicle(assessedVehicle);
         result.setSuggestedPrice(listings.get(0).getPrice());
-        result.getComparables().add(new ComparableListing(listings.get(0), 100));
+        result.getComparables().add(new Comparison(listings.get(0), 100));
         return result;
     }
 }

@@ -2,10 +2,10 @@ package domain
 
 class Assessment {
 
-    List<ComparableListing> getComparables() {
+    List<Comparison> getComparables() {
         return comparables
     }
-    public List<ComparableListing> comparables = new ArrayList<>()
+    public List<Comparison> comparables = new ArrayList<>()
 
     AssessedVehicle getAssessedVehicle() {
         return assessedVehicle
