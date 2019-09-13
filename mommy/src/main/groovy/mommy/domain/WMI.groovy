@@ -112,7 +112,7 @@ class WMI {
         if (vin.length() < 3) {
             return 'UNKNOWN'
         } else {
-            return lookup[vin[0..2]] ?: lookup[vin[0..1]]
+            return lookup[vin[0..2]] ?: lookup[vin[0..1]] ?: "UNKNOWN"
         }
     }
 

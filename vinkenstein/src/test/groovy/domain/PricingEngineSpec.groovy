@@ -51,5 +51,20 @@ class PricingEngineSpec extends Specification {
             assessment.comparables[1].priceDifferenceFromAssessed == 0
     }
 
+    def "no valid comparables"() {
+        given:
+            AssessedVehicle assessedVehicle = new AssessedVehicle(vin: "XFM5K8F82EGA64580", make: "FORD", model: "F150", year: 2014, numberOfAccidents: 1, numberOfOwners: 3)
+            List<Listing> listings = [
+                    new Listing(price: 99, vin: "BFM5K8F82EGA64580", make: "BMW", model: "M3", year: 2014, numberOfAccidents: 1, numberOfOwners: 3),
+                    new Listing(price: 77, vin: "MFM5K8F82EGA64580", make: "MINI", model: "COOPER", year: 2014, numberOfAccidents: 1, numberOfOwners: 3)
+            ]
+        when:
+            Assessment assessment = pricingEngine.assess(assessedVehicle, listings)
+        then:
+            assessment.suggestedPrice == 0
+            assessment.assessedVehicle == assessedVehicle
+            assessment.comparables.size() == 0
+    }
+
 
 }

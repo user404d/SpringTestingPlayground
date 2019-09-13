@@ -35,4 +35,8 @@ public class ListingsClient {
         restTemplate.postForObject(url+"/add", listing, String.class);
     }
 
+    public void removeAllListings() {
+        restTemplate.delete(url +"/clear");
+    }
+
 }

@@ -28,7 +28,7 @@ class ListingsController {
         return rawListings
     }
 
-    @RequestMapping("/clear")
+    @RequestMapping(value = "/clear", method= RequestMethod.DELETE)
     public int clear() {
         rawListings.clear()
         return rawListings.size()

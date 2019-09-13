@@ -24,10 +24,10 @@ public class HttpRequestTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void assessingHonda() {
-        Assessment assessment = restTemplate.getForObject("/assessment?vin=WBSBG9321VEY74382", Assessment.class);
+    public void assessingFord() {
+        Assessment assessment = restTemplate.getForObject("/assessment?vin=1FM5K8F82EGA64580", Assessment.class);
         System.out.println(assessment);
-        assertEquals(assessment.getAssessedVehicle().getVin(), "WBSBG9321VEY74382");
+        assertEquals(assessment.getAssessedVehicle().getVin(), "1FM5K8F82EGA64580");
         assertEquals(assessment.getSuggestedPrice(), 24000);
         assertTrue(assessment.getComparables().size()> 0);
         assertTrue(assessment.getComparables().get(0).getComparable().getVin() != null);

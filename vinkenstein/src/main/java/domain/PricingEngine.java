@@ -16,7 +16,9 @@ public class PricingEngine {
         for (Comparison comparison : result.getComparables()) {
             sumOfSuggestedPrices += comparison.getComparable().getPrice() - comparison.getPriceDifferenceFromAssessed();
         }
-        result.setSuggestedPrice(sumOfSuggestedPrices / result.getComparables().size());
+        if (result.getComparables().size() > 0) {
+            result.setSuggestedPrice(sumOfSuggestedPrices / result.getComparables().size());
+        }
         return result;
     }
 }
