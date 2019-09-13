@@ -13,6 +13,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
@@ -39,6 +41,14 @@ public class HttpRequestTest {
         assertEquals(listing.getPrice(), assessment.getSuggestedPrice());
         assertTrue(assessment.getComparables().size()> 0);
         assertTrue(assessment.getComparables().get(0).getComparable().getVin() != null);
+    }
+
+    @Test
+    public void severalAcuraMDX() {
+        List<Listing> listings = TestListings.getByMake("ACURA");
+        listingsClient.removeAllListings();
+
+
     }
 
 
