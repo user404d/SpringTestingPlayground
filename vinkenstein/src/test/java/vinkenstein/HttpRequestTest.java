@@ -1,6 +1,8 @@
 package vinkenstein;
 
+import clients.ListingsClient;
 import domain.Assessment;
+import domain.Listing;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes=TestAppConfig.class)
-@ActiveProfiles("test")
 @SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT) //, properties = "spring.main.allow-bean-definition-overriding=true")
 public class HttpRequestTest {
 
@@ -23,12 +24,19 @@ public class HttpRequestTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private ListingsClient listingsClient;
+
     @Test
     public void assessingFord() {
+        Listing listing = new Listing();
+        listing.setVin("1FM5K8F82EGA64580");
+        listing.setPrice(24000);
+        listingsClient.add(listing);
         Assessment assessment = restTemplate.getForObject("/assessment?vin=1FM5K8F82EGA64580", Assessment.class);
         System.out.println(assessment);
         assertEquals(assessment.getAssessedVehicle().getVin(), "1FM5K8F82EGA64580");
-        assertEquals(assessment.getSuggestedPrice(), 24000);
+        assertEquals(24000, assessment.getSuggestedPrice());
         assertTrue(assessment.getComparables().size()> 0);
         assertTrue(assessment.getComparables().get(0).getComparable().getVin() != null);
     }

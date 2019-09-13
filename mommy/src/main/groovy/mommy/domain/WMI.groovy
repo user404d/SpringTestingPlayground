@@ -109,6 +109,7 @@ class WMI {
     ]
 
     public static String get(String vin) {
+        sleep(200)
         if (vin.length() < 3) {
             return 'UNKNOWN'
         } else {

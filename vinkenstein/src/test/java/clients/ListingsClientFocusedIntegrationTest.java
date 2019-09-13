@@ -39,4 +39,19 @@ public class ListingsClientFocusedIntegrationTest {
         List<Listing> listingsAfter = listingsClient.getListings();
         assertEquals(44999, listingsAfter.stream().filter(listing -> "1N4AL11E26N343129".equals(listing.getVin())).findAny().get().getPrice());
     }
+
+    @Test
+    public void removeAllListings() {
+        Listing newListing = new Listing();
+        newListing.setVin("XN4AL11E26N343129");
+        newListing.setPrice(1);
+        listingsClient.add(newListing);
+        Listing newListing2 = new Listing();
+        newListing2.setVin("YN4AL11E26N343129");
+        newListing2.setPrice(1);
+        listingsClient.add(newListing2);
+        listingsClient.removeAllListings();
+        assertEquals(0, listingsClient.getListings().size());
+
+    }
 }

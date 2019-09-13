@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@Profile("default")
 public class AppConfig {
     @Bean
    ThirdPartyClient thirdPartyClient() {
