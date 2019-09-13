@@ -22,11 +22,13 @@ class PricingEngineSpec extends Specification {
         assessment.assessedVehicle == assessedVehicle
         assessment.comparables.size() == 1
         assessment.comparables[0].comparable == listings[0]
-        assessment.comparables[0].similarityScore == 100
+        assessment.comparables[0].priceDifferenceFromAssessed == 0
         where:
         listPrice | _
         0         | _
         123       | _
         23000     | _
     }
+
+
 }
