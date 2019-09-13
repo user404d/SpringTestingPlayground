@@ -35,10 +35,12 @@ public class HttpRequestTest {
 
 
     @Test
-    public void dynamicYearLookupOnAssessedVehicle() {
-        Assessment assessment = restTemplate.getForObject("/assessment?vin=AFM5K8F82EGA64580", Assessment.class);
+    public void dynamicYearMakeLookupOnAssessedVehicle() {
+        Assessment assessment = restTemplate.getForObject("/assessment?vin=JHM5K8F82FFA64580", Assessment.class);
         System.out.println(assessment);
-        assertEquals(assessment.getAssessedVehicle().getVin(), "AFM5K8F82EGA64580");
-        assertEquals(assessment.getAssessedVehicle().getYear(), 2014);
+        assertEquals(assessment.getAssessedVehicle().getVin(), "JHM5K8F82FFA64580");
+        assertEquals(assessment.getAssessedVehicle().getYear(), 2015);
+        assertEquals(assessment.getAssessedVehicle().getMake(), "Honda");
     }
+
 }
