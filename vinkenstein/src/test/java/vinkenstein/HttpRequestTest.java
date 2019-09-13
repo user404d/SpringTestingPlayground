@@ -1,6 +1,7 @@
 package vinkenstein;
 
 import clients.ListingsClient;
+import data.TestListings;
 import domain.Assessment;
 import domain.Listing;
 import org.junit.Test;
@@ -29,14 +30,13 @@ public class HttpRequestTest {
 
     @Test
     public void assessingFord() {
-        Listing listing = new Listing();
-        listing.setVin("1FM5K8F82EGA64580");
-        listing.setPrice(24000);
+        Listing listing = TestListings.getDataset().get(0);
+        listingsClient.removeAllListings();
         listingsClient.add(listing);
-        Assessment assessment = restTemplate.getForObject("/assessment?vin=1FM5K8F82EGA64580", Assessment.class);
+        Assessment assessment = restTemplate.getForObject("/assessment?vin="+listing.getVin(), Assessment.class);
         System.out.println(assessment);
-        assertEquals(assessment.getAssessedVehicle().getVin(), "1FM5K8F82EGA64580");
-        assertEquals(24000, assessment.getSuggestedPrice());
+        assertEquals(assessment.getAssessedVehicle().getVin(), listing.getVin());
+        assertEquals(listing.getPrice(), assessment.getSuggestedPrice());
         assertTrue(assessment.getComparables().size()> 0);
         assertTrue(assessment.getComparables().get(0).getComparable().getVin() != null);
     }
