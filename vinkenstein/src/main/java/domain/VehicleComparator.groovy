@@ -5,18 +5,14 @@ class VehicleComparator {
         Comparison result = new Comparison();
         result.setComparable(comparable);
         if (assessed.getMake().equalsIgnoreCase(comparable.getMake()) && assessed.getModel().equalsIgnoreCase(comparable.getModel())) {
-            int similarityScore = 100;
-            similarityScore -= Math.abs(comparable.getNumberOfAccidents() - assessed.getNumberOfAccidents())
-            result.setSimilarityScore(similarityScore);
-
+            result.setValid(true);
             int priceDifferenceFromAssessed = 0;
-            priceDifferenceFromAssessed +=
-                    (assessed.getNumberOfAccidents() - comparable.getNumberOfAccidents() < 0 ? -1 : 1) *
-                    Math.min (
-                    comparable.getPrice() * 0.1 * Math.abs(assessed.getNumberOfAccidents() - comparable.getNumberOfAccidents()),
-            comparable.getPrice() * 0.4
-                    );
+            priceDifferenceFromAssessed += new CappedScalarAdjuster(assessed.getNumberOfAccidents(), comparable.getNumberOfAccidents(), comparable.getPrice(), 0.1, false, 0.4).get();
+            priceDifferenceFromAssessed += new CappedScalarAdjuster(assessed.getYear(), comparable.getYear(), comparable.getPrice(), 0.1, true, 0.4).get();
+            priceDifferenceFromAssessed += new CappedScalarAdjuster(assessed.getNumberOfOwners(), comparable.getNumberOfOwners(), comparable.getPrice(), 0.05, false, 0.2).get();
             result.setPriceDifferenceFromAssessed(priceDifferenceFromAssessed);
+        } else {
+            result.setValid(false);
         }
         return result
     }

@@ -3,6 +3,15 @@ package domain
 class Comparison {
     int similarityScore;
 
+    boolean getValid() {
+        return valid
+    }
+
+    void setValid(boolean valid) {
+        this.valid = valid
+    }
+    boolean valid
+
     int getPriceDifferenceFromAssessed() {
         return priceDifferenceFromAssessed
     }

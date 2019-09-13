@@ -3,6 +3,14 @@ package domain
 import spock.lang.Specification
 
 class VehicleComparatorSpec extends Specification {
+    AssessedVehicle assessedVehicle ;
+    Listing comparable ;
+
+    def "setup"() {
+        assessedVehicle = new AssessedVehicle(vin: "5NPDH4AE0EH476884", make: "Buick", model: "LeSabre")
+        comparable = new Listing(vin: "XNPDH4AE0EH476884", make: "Buick", model: "LESABRE")
+    }
+
     def "all matching except for vin"() {
         given:
             AssessedVehicle assessedVehicle = new AssessedVehicle(vin: "5NPDH4AE0EH476884", make: "Buick", model: "LeSabre")
@@ -10,7 +18,7 @@ class VehicleComparatorSpec extends Specification {
         when:
             Comparison comparison = new VehicleComparator().compare(assessedVehicle, comparable)
         then:
-            comparison.similarityScore == 100
+            comparison.valid == true
             comparison.comparable == comparable
             comparison.priceDifferenceFromAssessed == 0
     }
@@ -22,7 +30,7 @@ class VehicleComparatorSpec extends Specification {
         when:
             Comparison comparison = new VehicleComparator().compare(assessedVehicle, comparable)
         then:
-            comparison.similarityScore == 100
+            comparison.valid == true
             comparison.comparable == comparable
             comparison.priceDifferenceFromAssessed == 0
     }
@@ -34,11 +42,9 @@ class VehicleComparatorSpec extends Specification {
         when:
             Comparison comparison = new VehicleComparator().compare(assessedVehicle, comparable)
         then:
-            comparison.similarityScore == 0
+            comparison.valid == false
             comparison.comparable == comparable
     }
-    AssessedVehicle assessedVehicle = new AssessedVehicle(vin: "5NPDH4AE0EH476884", make: "Buick", model: "LeSabre", numberOfAccidents: 0)
-    Listing comparable = new Listing(vin: "XNPDH4AE0EH476884", make: "Buick", model: "LESABRE", numberOfAccidents: 1)
 
     def "differ by one accident"() {
         given:
@@ -48,8 +54,7 @@ class VehicleComparatorSpec extends Specification {
         when:
             Comparison comparison = new VehicleComparator().compare(assessedVehicle, comparable)
         then:
-            comparison.similarityScore < 100
-            comparison.similarityScore > 0
+            comparison.valid == true
             comparison.comparable == comparable
             comparison.priceDifferenceFromAssessed == -1000
 
@@ -63,8 +68,7 @@ class VehicleComparatorSpec extends Specification {
         when:
             Comparison comparison = new VehicleComparator().compare(assessedVehicle, comparable)
         then:
-            comparison.similarityScore < 100
-            comparison.similarityScore > 0
+            comparison.valid == true
             comparison.comparable == comparable
             comparison.priceDifferenceFromAssessed == 1000
 
@@ -78,6 +82,31 @@ class VehicleComparatorSpec extends Specification {
         when:
             Comparison comparison = new VehicleComparator().compare(assessedVehicle, comparable)
         then:
+            comparison.valid == true
             comparison.priceDifferenceFromAssessed == -40000
+    }
+
+    def "one year"() {
+        given:
+            assessedVehicle.year = 2018
+            comparable.year = 2017
+            comparable.price = 100
+        when:
+            Comparison comparison = new VehicleComparator().compare(assessedVehicle, comparable)
+        then:
+            comparison.valid == true
+            comparison.priceDifferenceFromAssessed == -10
+    }
+
+    def "number of owners"() {
+        given:
+            assessedVehicle.numberOfOwners = 1
+            comparable.numberOfOwners = 2
+            comparable.price = 100
+        when:
+            Comparison comparison = new VehicleComparator().compare(assessedVehicle, comparable)
+        then:
+            comparison.valid == true
+            comparison.priceDifferenceFromAssessed == -5
     }
 }
