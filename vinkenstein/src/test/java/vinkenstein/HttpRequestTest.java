@@ -46,8 +46,16 @@ public class HttpRequestTest {
     @Test
     public void severalAcuraMDX() {
         List<Listing> listings = TestListings.getByMake("ACURA");
+        Listing assessed = listings.get(0);
+        listings.remove(assessed);
         listingsClient.removeAllListings();
-
+        for(Listing listing: listings) {
+            listingsClient.add(listing);
+        }
+        Assessment assessment = restTemplate.getForObject("/assessment?vin="+assessed.getVin(), Assessment.class);
+        assertEquals(assessment.getAssessedVehicle().getVin(), assessed.getVin());
+        assertEquals(20150, assessment.getSuggestedPrice());
+        assertTrue(assessment.getComparables().size()> 0);
 
     }
 
