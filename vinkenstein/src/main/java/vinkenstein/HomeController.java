@@ -17,6 +17,8 @@ import java.util.List;
 @RestController
 public class HomeController {
 
+    @Autowired String remoteServerHostname;
+
     @Autowired
     ThirdPartyClient thirdPartyClient;
 
@@ -33,18 +35,18 @@ public class HomeController {
     public @ResponseBody
     Assessment assessment(@RequestParam(required = true) String vin) {
         RestTemplate restTemplate = new RestTemplate();
-        Listing mommy = restTemplate.getForObject("http://localhost:8092/mommy?vin=" + vin, Listing.class);
-        Listing history = restTemplate.getForObject("http://localhost:8093/history?vin=" + vin, Listing.class);
+        Listing mommy = restTemplate.getForObject("http://"+remoteServerHostname+":8092/mommy?vin=" + vin, Listing.class);
+        Listing history = restTemplate.getForObject("http://"+remoteServerHostname+":8093/history?vin=" + vin, Listing.class);
         AssessedVehicle assessedVehicle = new AssessedVehicle(vin, mommy.getMake(), mommy.getModel(), mommy.getYear(), history.getNumberOfAccidents(), history.getNumberOfOwners());
 
         List<Listing> rawListings = listingsClient.getListings();
         for (Listing rawListing : rawListings) {
-            Listing rawListingMommy = restTemplate.getForObject("http://localhost:8092/mommy?vin=" + rawListing.getVin(), Listing.class);
+            Listing rawListingMommy = restTemplate.getForObject("http://"+remoteServerHostname+":8092/mommy?vin=" + rawListing.getVin(), Listing.class);
             rawListing.setMake(rawListingMommy.getMake());
             rawListing.setModel(rawListingMommy.getModel());
             rawListing.setYear(rawListingMommy.getYear());
 
-            Listing rawListingHistory = restTemplate.getForObject("http://localhost:8093/history?vin=" + rawListing.getVin(), Listing.class);
+            Listing rawListingHistory = restTemplate.getForObject("http://"+remoteServerHostname+":8093/history?vin=" + rawListing.getVin(), Listing.class);
             rawListing.setNumberOfOwners(rawListingHistory.getNumberOfOwners());
             rawListing.setNumberOfAccidents(rawListingHistory.getNumberOfAccidents());
         }
