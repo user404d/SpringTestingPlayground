@@ -54,7 +54,7 @@ public class HttpRequestTest {
         }
         Assessment assessment = restTemplate.getForObject("/assessment?vin="+assessed.getVin(), Assessment.class);
         assertEquals(assessment.getAssessedVehicle().getVin(), assessed.getVin());
-        assertEquals(20150, assessment.getSuggestedPrice());
+        assertEquals(23500, assessment.getSuggestedPrice());
         assertTrue(assessment.getComparables().size()> 0);
 
     }
@@ -62,11 +62,12 @@ public class HttpRequestTest {
 
     @Test
     public void dynamicYearMakeLookupOnAssessedVehicle() {
-        Assessment assessment = restTemplate.getForObject("/assessment?vin=JHM5K8F82FFA64580", Assessment.class);
+        Assessment assessment = restTemplate.getForObject("/assessment?vin=5FNRL5H40GB184780", Assessment.class);
         System.out.println(assessment);
-        assertEquals(assessment.getAssessedVehicle().getVin(), "JHM5K8F82FFA64580");
-        assertEquals(assessment.getAssessedVehicle().getYear(), 2015);
-        assertEquals(assessment.getAssessedVehicle().getMake(), "Honda");
+        assertEquals(assessment.getAssessedVehicle().getVin(), "5FNRL5H40GB184780");
+        assertEquals(assessment.getAssessedVehicle().getYear(), 2016);
+        assertEquals(assessment.getAssessedVehicle().getMake(), "HONDA");
+        assertEquals(assessment.getAssessedVehicle().getModel(), "ODYSSEY");
     }
 
 }
