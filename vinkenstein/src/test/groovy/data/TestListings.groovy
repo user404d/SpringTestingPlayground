@@ -41,4 +41,8 @@ class TestListings {
     static List<String> modelsfForMake(String make) {
         return dataset.findAll{it.make == make}.groupBy {it.model}.keySet().toList()
     }
+
+    static List<Listing> getByMakeModel(String make, String model) {
+        return dataset.findAll {it.make == make && it.model == model}
+    }
 }

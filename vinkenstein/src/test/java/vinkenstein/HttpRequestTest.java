@@ -19,8 +19,9 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes=TestAppConfig.class)
-@SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) //, properties = "spring.main.allow-bean-definition-overriding=true")
+@ContextConfiguration(classes = TestAppConfig.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//, properties = "spring.main.allow-bean-definition-overriding=true")
 public class HttpRequestTest {
 
 
@@ -35,7 +36,7 @@ public class HttpRequestTest {
         Listing listing = TestListings.getDataset().get(0);
         listingsClient.removeAllListings();
         listingsClient.add(listing);
-        Assessment assessment = restTemplate.getForObject("/assessment?vin="+listing.getVin(), Assessment.class);
+        Assessment assessment = restTemplate.getForObject("/assessment?vin=" + listing.getVin(), Assessment.class);
         System.out.println(assessment);
         assertEquals(assessment.getAssessedVehicle().getVin(), listing.getVin());
         assertEquals(listing.getPrice(), assessment.getSuggestedPrice());
@@ -49,13 +50,13 @@ public class HttpRequestTest {
         Listing assessed = listings.get(0);
         listings.remove(assessed);
         listingsClient.removeAllListings();
-        for(Listing listing: listings) {
+        for (Listing listing : listings) {
             listingsClient.add(listing);
         }
-        Assessment assessment = restTemplate.getForObject("/assessment?vin="+assessed.getVin(), Assessment.class);
+        Assessment assessment = restTemplate.getForObject("/assessment?vin=" + assessed.getVin(), Assessment.class);
         assertEquals(assessment.getAssessedVehicle().getVin(), assessed.getVin());
         assertEquals(23500, assessment.getSuggestedPrice());
-        assertTrue(assessment.getComparables().size()> 0);
+        assertTrue(assessment.getComparables().size() > 0);
 
     }
 
@@ -68,6 +69,34 @@ public class HttpRequestTest {
         assertEquals(assessment.getAssessedVehicle().getYear(), 2016);
         assertEquals(assessment.getAssessedVehicle().getMake(), "HONDA");
         assertEquals(assessment.getAssessedVehicle().getModel(), "ODYSSEY");
+    }
+
+
+    @Test
+    public void ignoreOtherModelsForPricing() {
+        List<Listing> mercuryListingsForAllModels = TestListings.getByMake("MERCURY");
+        List<Listing> mercuryListingsForMountaineer = TestListings.getByMakeModel("MERCURY", "MOUNTAINEER");
+        assertTrue(mercuryListingsForAllModels.size() > mercuryListingsForMountaineer.size());
+
+        Listing assessedMountaineer = mercuryListingsForMountaineer.remove(0);
+        assertTrue(mercuryListingsForAllModels.remove(assessedMountaineer));
+
+        listingsClient.removeAllListings();
+        for (Listing listing : mercuryListingsForAllModels) {
+            listingsClient.add(listing);
+        }
+
+        int priceAssessedForAll = restTemplate.getForObject("/assessment?vin=" + assessedMountaineer.getVin(), Assessment.class).getSuggestedPrice();
+
+        listingsClient.removeAllListings();
+        for (Listing listing : mercuryListingsForMountaineer) {
+            listingsClient.add(listing);
+        }
+
+        int priceAssessedForMountaineers = restTemplate.getForObject("/assessment?vin=" + assessedMountaineer.getVin(), Assessment.class).getSuggestedPrice();
+
+        assertEquals(priceAssessedForAll, priceAssessedForMountaineers);
+
     }
 
 }
