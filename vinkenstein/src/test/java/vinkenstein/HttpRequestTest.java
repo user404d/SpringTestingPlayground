@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes=TestAppConfig.class)
-@SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT) //, properties = "spring.main.allow-bean-definition-overriding=true")
+@SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) //, properties = "spring.main.allow-bean-definition-overriding=true")
 public class HttpRequestTest {
 
 
@@ -31,7 +31,7 @@ public class HttpRequestTest {
     private ListingsClient listingsClient;
 
     @Test
-    public void assessingFord() {
+    public void asessedVinSameAsListed() {
         Listing listing = TestListings.getDataset().get(0);
         listingsClient.removeAllListings();
         listingsClient.add(listing);
@@ -39,8 +39,8 @@ public class HttpRequestTest {
         System.out.println(assessment);
         assertEquals(assessment.getAssessedVehicle().getVin(), listing.getVin());
         assertEquals(listing.getPrice(), assessment.getSuggestedPrice());
-        assertTrue(assessment.getComparables().size()> 0);
-        assertTrue(assessment.getComparables().get(0).getComparable().getVin() != null);
+        assertEquals(1, assessment.getComparables().size());
+        assertEquals(listing.getVin(), assessment.getComparables().get(0).getComparable().getVin());
     }
 
     @Test
