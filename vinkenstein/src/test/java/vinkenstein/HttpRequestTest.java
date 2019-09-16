@@ -121,4 +121,15 @@ public class HttpRequestTest {
         assertTrue(priceAssessed < comparableFewerOwners.getPrice());
     }
 
+    @Test
+    public void moreAccidentsIsCheaper() {
+        listingsClient.removeAllListings();
+        Listing assessedMoreAccidents = TestListings.getByVin("6G2EP57W89L309931");
+        Listing comparableFewerAccidents = TestListings.getByVin("6G2EP57W79L353452");
+        assertTrue("Precondition: numberOfAccidents", assessedMoreAccidents.getNumberOfAccidents() > comparableFewerAccidents.getNumberOfAccidents());
+        listingsClient.add(comparableFewerAccidents);
+        int priceAssessed = restTemplate.getForObject("/assessment?vin=" + assessedMoreAccidents.getVin(), Assessment.class).getSuggestedPrice();
+        assertTrue(priceAssessed < comparableFewerAccidents.getPrice());
+    }
+
 }
