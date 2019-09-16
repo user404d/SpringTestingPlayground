@@ -6,6 +6,15 @@ import listings.domain.History
 class TestListings {
     static def histories = new JsonSlurper().parse(new File('history/src/main/resources/history.json'))
 
+    static volatile boolean shouldStepNumberOfOwners = false
+    static volatile boolean shouldStepNumberOfAccidents = false
+    static volatile long secondsBetweenSteps = 120
+    static volatile int stepSize = 1
+    static volatile int currentStep = 0
+
+
+
+
     static Map<String, History> dataset = [
             'WBSBG9321VEY74382': new History(vin: 'WBSBG9321VEY74382',  numberOfOwners: 2,   numberOfAccidents: 12),
             "1FM5K8F82EGA64580": new History(vin: "1FM5K8F82EGA64580", numberOfAccidents: 1, numberOfOwners: 3), //  make: "FORD", model: "F150", year: 2014,  price: 23000),
