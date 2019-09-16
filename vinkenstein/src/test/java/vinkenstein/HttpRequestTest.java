@@ -99,4 +99,17 @@ public class HttpRequestTest {
 
     }
 
+    @Test
+    public void olderIsCheaper() {
+        listingsClient.removeAllListings();
+        //5J8TB4H59HL026972|ACURA|RDX|2017|0|1|31728
+        //5J8TB4H56GL047140|ACURA|RDX|2016|0|1|27067
+        Listing assessedOlder = TestListings.getByVin("5J8TB4H56GL047140");
+        Listing comparableYounger = TestListings.getByVin("5J8TB4H59HL026972");
+        assertTrue(assessedOlder.getYear() < comparableYounger.getYear());
+        listingsClient.add(comparableYounger);
+        int priceAssessed = restTemplate.getForObject("/assessment?vin=" + assessedOlder.getVin(), Assessment.class).getSuggestedPrice();
+        assertTrue(priceAssessed < comparableYounger.getPrice());
+    }
+
 }

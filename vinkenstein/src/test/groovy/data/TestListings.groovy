@@ -45,4 +45,8 @@ class TestListings {
     static List<Listing> getByMakeModel(String make, String model) {
         return dataset.findAll {it.make == make && it.model == model}
     }
+
+    static Listing getByVin(String vin) {
+        return dataset.find {it.vin == vin}
+    }
 }
