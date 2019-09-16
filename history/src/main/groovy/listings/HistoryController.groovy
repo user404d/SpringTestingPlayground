@@ -12,6 +12,6 @@ class HistoryController {
     @RequestMapping("/history")
     public @ResponseBody
     History histories(@RequestParam (required = true) String vin) {
-        return TestListings.dataset[vin]
+        return TestListings.byVin(vin)
     }
 }

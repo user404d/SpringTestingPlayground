@@ -76,10 +76,10 @@ public class HttpRequestTest {
     public void ignoreOtherModelsForPricing() {
         List<Listing> mercuryListingsForAllModels = TestListings.getByMake("MERCURY");
         List<Listing> mercuryListingsForMountaineer = TestListings.getByMakeModel("MERCURY", "MOUNTAINEER");
-        assertTrue(mercuryListingsForAllModels.size() > mercuryListingsForMountaineer.size());
+        assertTrue("Precondition: there should be at least one listing with different model", mercuryListingsForAllModels.size() > mercuryListingsForMountaineer.size());
 
         Listing assessedMountaineer = mercuryListingsForMountaineer.remove(0);
-        assertTrue(mercuryListingsForAllModels.remove(assessedMountaineer));
+        assertTrue("Sanity check - all models should include listing being assessed", mercuryListingsForAllModels.remove(assessedMountaineer));
 
         listingsClient.removeAllListings();
         for (Listing listing : mercuryListingsForAllModels) {
@@ -102,11 +102,9 @@ public class HttpRequestTest {
     @Test
     public void olderIsCheaper() {
         listingsClient.removeAllListings();
-        //5J8TB4H59HL026972|ACURA|RDX|2017|0|1|31728
-        //5J8TB4H56GL047140|ACURA|RDX|2016|0|1|27067
         Listing assessedOlder = TestListings.getByVin("5J8TB4H56GL047140");
         Listing comparableYounger = TestListings.getByVin("5J8TB4H59HL026972");
-        assertTrue(assessedOlder.getYear() < comparableYounger.getYear());
+        assertTrue("Precondition: year", assessedOlder.getYear() < comparableYounger.getYear());
         listingsClient.add(comparableYounger);
         int priceAssessed = restTemplate.getForObject("/assessment?vin=" + assessedOlder.getVin(), Assessment.class).getSuggestedPrice();
         assertTrue(priceAssessed < comparableYounger.getPrice());
