@@ -6,14 +6,6 @@ import listings.domain.History
 class TestListings {
     static def histories = new JsonSlurper().parse(new File('history/src/main/resources/history.json'))
 
-    static volatile boolean shouldStepNumberOfOwners = false
-    static volatile boolean shouldStepNumberOfAccidents = false
-    static volatile long secondsBetweenSteps = 120
-    static volatile int stepSize = 1
-    static volatile int currentStep = 0
-
-
-
 
     static Map<String, History> dataset = [
             'WBSBG9321VEY74382': new History(vin: 'WBSBG9321VEY74382',  numberOfOwners: 2,   numberOfAccidents: 12),
@@ -38,5 +30,17 @@ class TestListings {
             result = new History(vin: vin,numberOfOwners: 0,   numberOfAccidents: 0)
         }
         return result
+    }
+
+    static def increment(int accidentDelta, int ownersDelta) {
+        Random random = new Random()
+        histories.each {
+            it.numberOfAccidents += random.nextInt(accidentDelta)
+            it.numberOfOwners += random.nextInt(ownersDelta)
+        }
+        dataset.each {key, value ->
+            value.numberOfAccidents += random.nextInt(accidentDelta)
+            value.numberOfOwners += random.nextInt(ownersDelta)
+        }
     }
 }

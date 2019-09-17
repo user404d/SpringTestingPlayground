@@ -116,6 +116,8 @@ public class HttpRequestTest {
         Listing assessedMoreOwners = TestListings.getByVin("KNALW4D42F6086777");
         Listing comparableFewerOwners = TestListings.getByVin("KNALW4D44F6063577");
         assertTrue("Precondition: numberOfOwners", assessedMoreOwners.getNumberOfOwners() > comparableFewerOwners.getNumberOfOwners());
+        assertTrue("Precondition: numberOfAccidents", assessedMoreOwners.getNumberOfAccidents() == comparableFewerOwners.getNumberOfAccidents());
+
         listingsClient.add(comparableFewerOwners);
         int priceAssessed = restTemplate.getForObject("/assessment?vin=" + assessedMoreOwners.getVin(), Assessment.class).getSuggestedPrice();
         assertTrue(priceAssessed < comparableFewerOwners.getPrice());
@@ -127,6 +129,7 @@ public class HttpRequestTest {
         Listing assessedMoreAccidents = TestListings.getByVin("6G2EP57W89L309931");
         Listing comparableFewerAccidents = TestListings.getByVin("6G2EP57W79L353452");
         assertTrue("Precondition: numberOfAccidents", assessedMoreAccidents.getNumberOfAccidents() > comparableFewerAccidents.getNumberOfAccidents());
+        assertTrue("Precondition: numberOfOwners", assessedMoreAccidents.getNumberOfOwners() == comparableFewerAccidents.getNumberOfOwners());
         listingsClient.add(comparableFewerAccidents);
         int priceAssessed = restTemplate.getForObject("/assessment?vin=" + assessedMoreAccidents.getVin(), Assessment.class).getSuggestedPrice();
         assertTrue(priceAssessed < comparableFewerAccidents.getPrice());
