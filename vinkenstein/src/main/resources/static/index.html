@@ -4,92 +4,117 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Vinkenstein pricing engine</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
 <h1>Vinkenstein pricing engine</h1>
-<form>Enter a VIN of the vehicle you are trying to price: <input type="text" name="vin" id="vin_field"><button type="button" onclick="callServer()">Price it!</button></form>
+<form>Enter a VIN of the vehicle you are trying to price: <input type="text" name="vin" id="vin_field">
+    <button type="button" onclick="callServer()">Price it!</button>
+</form>
 <script>
-function callServer() {
-  var vin = document.getElementById("vin_field").value
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      var assessment = JSON.parse(this.responseText);
-      var listings = assessment.comparables
-      clear(document.getElementById("comparables"));
-      for (i in listings) {
-        var listingDiv = comparableLine(listings[i].comparable, listings[i].priceDifferenceFromAssessed);
-        document.getElementById("comparables").appendChild(listingDiv);
-      };
-      clear(document.getElementById("assessed-vehicle"));
-      document.getElementById("assessed-vehicle").appendChild(pricedVehicleHeader());
-      document.getElementById("assessed-vehicle").appendChild(listingLine(assessment.assessedVehicle));
-      document.getElementById("suggested-price").innerHTML = assessment.suggestedPrice;
-    };
-  };
-  xhttp.open("GET", "/assessment?vin="+vin, true);
-  xhttp.send();
-}
+    function callServer() {
+        var vin = document.getElementById("vin_field").value
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var assessment = JSON.parse(this.responseText);
+                var listings = assessment.comparables;
 
-function clear(node) {
-  while (node.firstChild) {
-    node.removeChild(node.firstChild);
-  }
-}
+                clear(document.getElementById("comparables"));
+                if (listings.length > 0) {
+                    document.getElementById("comparables").appendChild(comparableHeader());
+                }
+                ;
+                for (i in listings) {
+                    var listingDiv = comparableLine(listings[i].comparable, listings[i].priceDifferenceFromAssessed);
+                    document.getElementById("comparables").appendChild(listingDiv);
+                }
+                ;
 
-function pricedVehicleHeader() {
-    var listingMainElement = document.createElement("DIV");
-    listingMainElement.setAttribute("class","row")
-    addDataSpan(listingMainElement, "VIN");
-    addDataSpan(listingMainElement, "Make");
-    addDataSpan(listingMainElement, "Model");
-    addDataSpan(listingMainElement, "Year");
-    addDataSpan(listingMainElement, "Owners");
-    addDataSpan(listingMainElement, "Accidents");
+                clear(document.getElementById("assessed-vehicle"));
+                document.getElementById("assessed-vehicle").appendChild(pricedVehicleHeader());
+                document.getElementById("assessed-vehicle").appendChild(listingLine(assessment.assessedVehicle));
+                document.getElementById("suggested-price").innerHTML = assessment.suggestedPrice;
+            }
+            ;
+        };
+        xhttp.open("GET", "/assessment?vin=" + vin, true);
+        xhttp.send();
+    }
 
-    return listingMainElement;
-}
+    function clear(node) {
+        while (node.firstChild) {
+            node.removeChild(node.firstChild);
+        }
+    }
 
-function listingLine(listing) {
-  var listingMainElement = document.createElement("DIV");
-  listingMainElement.setAttribute("class","row")
-  addDataSpan(listingMainElement, listing.vin);
-  addDataSpan(listingMainElement, listing.make);
-  addDataSpan(listingMainElement, listing.model);
-  addDataSpan(listingMainElement, listing.year);
-  addDataSpan(listingMainElement, listing.numberOfOwners);
-  addDataSpan(listingMainElement, listing.numberOfAccidents);
-  return listingMainElement;
-}
+    function pricedVehicleHeader() {
+        var listingMainElement = document.createElement("DIV");
+        listingMainElement.setAttribute("class", "row");
+        addCommonHeaderDataElements(listingMainElement);
+        return listingMainElement;
+    }
 
-function comparableLine(listing, priceDifferenceFromAssessed) {
-    var listingMainElement = document.createElement("DIV");
-    listingMainElement.setAttribute("class","row")
-    addDataSpan(listingMainElement, listing.vin);
-    addDataSpan(listingMainElement, listing.make);
-    addDataSpan(listingMainElement, listing.model);
-    addDataSpan(listingMainElement, listing.year);
-    addDataSpan(listingMainElement, listing.numberOfOwners);
-    addDataSpan(listingMainElement, listing.numberOfAccidents);
-    addDataSpan(listingMainElement, listing.price);
-    addDataSpan(listingMainElement, priceDifferenceFromAssessed);
-    return listingMainElement;
-}
+    function listingLine(listing) {
+        var listingMainElement = document.createElement("DIV");
+        listingMainElement.setAttribute("class", "row");
+        addCommonListingDataElements(listingMainElement, listing);
+        return listingMainElement;
+    }
 
-function addDataSpan(parentDiv, contents) {
-  var dataSpan = document.createElement("div");
-  dataSpan.setAttribute("class", "col-sm")
-  dataSpan.innerHTML = contents;
-  parentDiv.appendChild(dataSpan);
-}
+    function addCommonListingDataElements(listingMainElement, listing) {
+        addDataSpan(listingMainElement, listing.vin);
+        addDataSpan(listingMainElement, listing.make);
+        addDataSpan(listingMainElement, listing.model);
+        addDataSpan(listingMainElement, listing.year);
+        addDataSpan(listingMainElement, listing.numberOfOwners);
+        addDataSpan(listingMainElement, listing.numberOfAccidents);
+    }
+
+    function addCommonHeaderDataElements(listingMainElement) {
+        addDataSpan(listingMainElement, "VIN");
+        addDataSpan(listingMainElement, "Make");
+        addDataSpan(listingMainElement, "Model");
+        addDataSpan(listingMainElement, "Year");
+        addDataSpan(listingMainElement, "Owners");
+        addDataSpan(listingMainElement, "Accidents");
+    }
+
+    function comparableHeader() {
+        var listingMainElement = document.createElement("DIV");
+        listingMainElement.setAttribute("class", "row")
+        addCommonHeaderDataElements(listingMainElement);
+        addDataSpan(listingMainElement, "Price");
+        addDataSpan(listingMainElement, "Price delta");
+        return listingMainElement;
+    }
+
+    function comparableLine(listing, priceDifferenceFromAssessed) {
+        var listingMainElement = document.createElement("DIV");
+        listingMainElement.setAttribute("class", "row")
+        addCommonListingDataElements(listingMainElement, listing);
+        addDataSpan(listingMainElement, listing.price);
+        addDataSpan(listingMainElement, priceDifferenceFromAssessed);
+        return listingMainElement;
+    }
+
+    function addDataSpan(parentDiv, contents) {
+        var dataSpan = document.createElement("div");
+        dataSpan.setAttribute("class", "col-sm")
+        dataSpan.innerHTML = contents;
+        parentDiv.appendChild(dataSpan);
+    }
 
 </script>
-Suggested price: <div id="suggested-price"></div>
+Suggested price:
+<div id="suggested-price"></div>
 <br>
-Information about assessed vehicle: <div id="assessed-vehicle" class="container"></div>
+Information about assessed vehicle:
+<div id="assessed-vehicle" class="container"></div>
 <br>
-Comparables: <div id="comparables" class="container"></div>
+Comparables:
+<div id="comparables" class="container"></div>
 <br>
 <br>
 <p>Example vins: WBSBG9321VEY74382, 1FM5K8F82EGA64580</p>
