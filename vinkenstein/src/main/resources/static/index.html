@@ -10,7 +10,7 @@
 <body>
 <h1>Vinkenstein pricing engine</h1>
 <form>Enter a VIN of the vehicle you are trying to price: <input type="text" name="vin" id="vin_field">
-    <button type="button" onclick="callServer()">Price it!</button>
+    <button type="button" onclick="callServer()" class="btn btn-primary">Price it!</button>
 </form>
 <script>
     function callServer() {
@@ -50,15 +50,15 @@
     }
 
     function pricedVehicleHeader() {
-        var listingMainElement = document.createElement("DIV");
-        listingMainElement.setAttribute("class", "row");
+        var head = document.createElement("thead");
+        var listingMainElement = document.createElement("tr");
+        head.appendChild(listingMainElement);
         addCommonHeaderDataElements(listingMainElement);
-        return listingMainElement;
+        return head;
     }
 
     function listingLine(listing) {
-        var listingMainElement = document.createElement("DIV");
-        listingMainElement.setAttribute("class", "row");
+        var listingMainElement = document.createElement("tr");
         addCommonListingDataElements(listingMainElement, listing);
         return listingMainElement;
     }
@@ -82,8 +82,9 @@
     }
 
     function comparableHeader() {
-        var listingMainElement = document.createElement("DIV");
-        listingMainElement.setAttribute("class", "row")
+        var head = document.createElement("thead");
+        var listingMainElement = document.createElement("tr");
+        head.appendChild(listingMainElement);
         addCommonHeaderDataElements(listingMainElement);
         addDataSpan(listingMainElement, "Price");
         addDataSpan(listingMainElement, "Price delta");
@@ -91,8 +92,7 @@
     }
 
     function comparableLine(listing, priceDifferenceFromAssessed) {
-        var listingMainElement = document.createElement("DIV");
-        listingMainElement.setAttribute("class", "row")
+        var listingMainElement = document.createElement("tr");
         addCommonListingDataElements(listingMainElement, listing);
         addDataSpan(listingMainElement, listing.price);
         addDataSpan(listingMainElement, priceDifferenceFromAssessed);
@@ -100,21 +100,20 @@
     }
 
     function addDataSpan(parentDiv, contents) {
-        var dataSpan = document.createElement("div");
-        dataSpan.setAttribute("class", "col-sm")
+        var dataSpan = document.createElement("td");
         dataSpan.innerHTML = contents;
         parentDiv.appendChild(dataSpan);
     }
 
 </script>
 Suggested price:
-<div id="suggested-price"></div>
+<div id="suggested-price" class="badge badge-success"></div>
 <br>
 Information about assessed vehicle:
-<div id="assessed-vehicle" class="container"></div>
+<table id="assessed-vehicle" class="table table-dark"></table>
 <br>
 Comparables:
-<div id="comparables" class="container"></div>
+<table id="comparables" class="table table-striped"></table>
 <br>
 <br>
 <p>Example vins: WBSBG9321VEY74382, 1FM5K8F82EGA64580</p>
