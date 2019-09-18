@@ -19,8 +19,7 @@ function callServer() {
       var listings = assessment.comparables
       clear(document.getElementById("comparables"));
       for (i in listings) {
-        var listingDiv = listingLine(listings[i].comparable);
-        addDataSpan(listingDiv, listings[i].priceDifferenceFromAssessed);
+        var listingDiv = comparableLine(listings[i].comparable, listings[i].priceDifferenceFromAssessed);
         document.getElementById("comparables").appendChild(listingDiv);
       };
       clear(document.getElementById("assessed-vehicle"));
@@ -43,7 +42,6 @@ function pricedVehicleHeader() {
     var listingMainElement = document.createElement("DIV");
     listingMainElement.setAttribute("class","row")
     addDataSpan(listingMainElement, "VIN");
-    addDataSpan(listingMainElement, "Price");
     addDataSpan(listingMainElement, "Make");
     addDataSpan(listingMainElement, "Model");
     addDataSpan(listingMainElement, "Year");
@@ -57,14 +55,26 @@ function listingLine(listing) {
   var listingMainElement = document.createElement("DIV");
   listingMainElement.setAttribute("class","row")
   addDataSpan(listingMainElement, listing.vin);
-  addDataSpan(listingMainElement, listing.price);
   addDataSpan(listingMainElement, listing.make);
   addDataSpan(listingMainElement, listing.model);
   addDataSpan(listingMainElement, listing.year);
   addDataSpan(listingMainElement, listing.numberOfOwners);
   addDataSpan(listingMainElement, listing.numberOfAccidents);
-
   return listingMainElement;
+}
+
+function comparableLine(listing, priceDifferenceFromAssessed) {
+    var listingMainElement = document.createElement("DIV");
+    listingMainElement.setAttribute("class","row")
+    addDataSpan(listingMainElement, listing.vin);
+    addDataSpan(listingMainElement, listing.make);
+    addDataSpan(listingMainElement, listing.model);
+    addDataSpan(listingMainElement, listing.year);
+    addDataSpan(listingMainElement, listing.numberOfOwners);
+    addDataSpan(listingMainElement, listing.numberOfAccidents);
+    addDataSpan(listingMainElement, listing.price);
+    addDataSpan(listingMainElement, priceDifferenceFromAssessed);
+    return listingMainElement;
 }
 
 function addDataSpan(parentDiv, contents) {
