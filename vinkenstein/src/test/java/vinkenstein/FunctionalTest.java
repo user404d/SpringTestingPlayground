@@ -4,6 +4,8 @@ import clients.ListingsClient;
 import data.TestListings;
 import domain.Assessment;
 import domain.Listing;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
@@ -24,6 +27,7 @@ import static org.junit.Assert.assertEquals;
 //, properties = "spring.main.allow-bean-definition-overriding=true")
 public class FunctionalTest {
 
+    @Autowired String remoteServerHostname;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -31,18 +35,74 @@ public class FunctionalTest {
     @Autowired
     private ListingsClient listingsClient;
 
+    List<Listing> listingsToCleanup;
+
+    @Before
+    public void setup() {
+        listingsToCleanup = new ArrayList<>();
+    }
+
+    @After
+    public void tearDown() {
+       for (Listing listing: listingsToCleanup) {
+           listingsClient.delete(listing.getVin());
+       }
+    }
+
     @Test
     public void asessedVinSameAsListed() {
         Listing listing = TestListings.getDataset().get(0);
-        listingsClient.removeAllListings();
-        listingsClient.add(listing);
-        Assessment assessment = restTemplate.getForObject("/assessment?vin=" + listing.getVin(), Assessment.class);
-        System.out.println(assessment);
-        assertEquals(assessment.getAssessedVehicle().getVin(), listing.getVin());
-        assertEquals(listing.getPrice(), assessment.getSuggestedPrice());
-        assertEquals(1, assessment.getComparables().size());
-        assertEquals(listing.getVin(), assessment.getComparables().get(0).getComparable().getVin());
+        givenVinHasMakeModelYear(listing.getVin(), listing.getMake(), listing.getModel(), listing.getYear());
+        givenNoMakeModelForSale(listing.getMake(), listing.getModel());
+        givenVinListedForSale(listing.getVin(), listing.getPrice());
+        whenCustomerPrices(listing.getVin());
+        thenAssessedPrice(listing.getPrice());
+        thenSuggestedComparablePriceAdjustment(listing.getVin(), 0);
     }
+
+    private void givenVinHasMakeModelYear(String vin, String make, String model, int year) {
+        Listing accordingToMommy = restTemplate.getForObject("http://"+remoteServerHostname+":8092/mommy?vin=" + vin, Listing.class);
+        assertEquals(make, accordingToMommy.getMake());
+        assertEquals(model, accordingToMommy.getModel());
+        assertEquals(year, accordingToMommy.getYear());
+    }
+
+    Assessment assessment;
+
+    public void whenCustomerPrices(String vin) {
+        assessment = restTemplate.getForObject("/assessment?vin=" + vin, Assessment.class);
+        assertEquals(assessment.getAssessedVehicle().getVin(), vin);
+    }
+
+    public void givenNoMakeModelForSale(String make, String model) {
+        //listingsClient.removeAllListings();
+        List<Listing> listings = listingsClient.getListings();
+        for (Listing listing : listings) {
+            Listing accordingToMommy = restTemplate.getForObject("http://"+remoteServerHostname+":8092/mommy?vin=" + listing.getVin(), Listing.class);
+            if (make.equals(accordingToMommy.getMake()) && model.equals(accordingToMommy.getModel())) {
+                listingsClient.delete(listing.getVin());
+            }
+        }
+    }
+
+    public void givenVinListedForSale(String vin, int price) {
+        Listing listing = new Listing();
+        listing.setVin(vin);
+        listing.setPrice(price);
+        listingsClient.add(listing);
+        listingsToCleanup.add(listing);
+    }
+
+    public void thenAssessedPrice(int expectedPrice) {
+        assertEquals(expectedPrice, assessment.getSuggestedPrice());
+    }
+
+    public void thenSuggestedComparablePriceAdjustment(String comparableVin, int expectedPriceAdjustment) {
+        assertEquals(1, assessment.getComparables().size());
+        assertEquals(comparableVin, assessment.getComparables().get(0).getComparable().getVin());
+        assertEquals(expectedPriceAdjustment, assessment.getComparables().get(0).getPriceDifferenceFromAssessed());
+    }
+
 
     @Test
     public void severalAcuraMDX() {
