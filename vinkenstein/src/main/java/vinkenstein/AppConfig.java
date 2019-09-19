@@ -8,7 +8,8 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class AppConfig {
     @Bean String remoteServerHostname() {
-       return "localhost"; //"A-TD1EMGTFM";
+        return "A-TD1EMGTFM"; //"localhost";
+
     } ;
 
     @Bean
