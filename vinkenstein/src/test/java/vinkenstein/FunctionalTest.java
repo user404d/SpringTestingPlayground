@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(classes = TestAppConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //, properties = "spring.main.allow-bean-definition-overriding=true")
-public class HttpRequestTest {
+public class FunctionalTest {
 
 
     @Autowired
