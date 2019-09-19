@@ -1,6 +1,7 @@
 package vinkenstein;
 
 import clients.ListingsClient;
+import domain.PricingEngine;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -24,5 +25,10 @@ public class AppConfig {
     @Bean
     ListingsClient listingsClient(RestTemplate restTemplate, String remoteServerHostname) {
         return new ListingsClient("http://"+remoteServerHostname+":8091", restTemplate);
+    }
+
+    @Bean
+    PricingEngine pricingEngine(RestTemplate restTemplate, String remoteServerHostname) {
+        return new PricingEngine(restTemplate, remoteServerHostname);
     }
 }

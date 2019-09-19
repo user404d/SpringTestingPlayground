@@ -17,6 +17,8 @@ import java.util.List;
 @RestController
 public class HomeController {
 
+    @Autowired PricingEngine pricingEngine;
+
     @Autowired String remoteServerHostname;
 
     @Autowired
@@ -36,8 +38,7 @@ public class HomeController {
     Assessment assessment(@RequestParam(required = true) String vin) {
         RestTemplate restTemplate = new RestTemplate();
         Listing mommy = restTemplate.getForObject("http://"+remoteServerHostname+":8092/mommy?vin=" + vin, Listing.class);
-        Listing history = restTemplate.getForObject("http://"+remoteServerHostname+":8093/history?vin=" + vin, Listing.class);
-        AssessedVehicle assessedVehicle = new AssessedVehicle(vin, mommy.getMake(), mommy.getModel(), mommy.getYear(), history.getNumberOfAccidents(), history.getNumberOfOwners());
+        AssessedVehicle assessedVehicle = new AssessedVehicle(vin, mommy.getMake(), mommy.getModel(), mommy.getYear(), 0, 0); //history.getNumberOfAccidents(), history.getNumberOfOwners());
 
         List<Listing> rawListings = listingsClient.getListings();
         for (Listing rawListing : rawListings) {
@@ -45,12 +46,7 @@ public class HomeController {
             rawListing.setMake(rawListingMommy.getMake());
             rawListing.setModel(rawListingMommy.getModel());
             rawListing.setYear(rawListingMommy.getYear());
-
-            Listing rawListingHistory = restTemplate.getForObject("http://"+remoteServerHostname+":8093/history?vin=" + rawListing.getVin(), Listing.class);
-            rawListing.setNumberOfOwners(rawListingHistory.getNumberOfOwners());
-            rawListing.setNumberOfAccidents(rawListingHistory.getNumberOfAccidents());
         }
-        PricingEngine pricingEngine = new PricingEngine();
 
         return pricingEngine.assess(assessedVehicle, rawListings);
     }

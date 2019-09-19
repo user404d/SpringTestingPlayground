@@ -13,6 +13,7 @@ bootJar {
 dependencies {
     implementation "org.codehaus.groovy:groovy-all:2.5.7"
     testCompile "org.spockframework:spock-core:1.3-groovy-2.5"
+    testCompile "org.spockframework:spock-spring:1.3-groovy-2.5"
     //testCompile "org.gebish:geb-spock:${gebVersion}"
     //testCompile "org.seleniumhq.selenium:selenium-firefox-driver:${seleniumVersion}"
     testCompile "org.gebish:geb-core:${gebVersion}"

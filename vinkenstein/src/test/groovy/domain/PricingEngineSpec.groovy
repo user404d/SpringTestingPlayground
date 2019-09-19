@@ -1,14 +1,18 @@
 package domain
 
+import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.junit4.SpringRunner
 import spock.lang.Specification
 import spock.lang.Unroll
+import vinkenstein.AppConfig
 
+@ContextConfiguration(classes = AppConfig)
 class PricingEngineSpec extends Specification {
-    PricingEngine pricingEngine
+    @Autowired PricingEngine pricingEngine
 
-    def setup() {
-        pricingEngine = new PricingEngine()
-    }
 
     @Unroll
     def "identical single comparable priced #listPrice"() {
@@ -32,7 +36,7 @@ class PricingEngineSpec extends Specification {
 
     def "ignore non-matching make and model"() {
         given:
-            AssessedVehicle assessedVehicle = new AssessedVehicle(vin: "XFM5K8F82EGA64580", make: "FORD", model: "F150", year: 2014, numberOfAccidents: 1, numberOfOwners: 3)
+            AssessedVehicle assessedVehicle = new AssessedVehicle(vin: "XFM5K8F82EGA64580", make: "FORD", model: "F150", year: 2014, numberOfAccidents: 0, numberOfOwners: 0)
             List<Listing> listings = [
                     new Listing(price: 99, vin: "BFM5K8F82EGA64580", make: "BMW", model: "M3", year: 2014, numberOfAccidents: 1, numberOfOwners: 3),
                     new Listing(price: 4000, vin: "FFM5K8F82EGA64580", make: "FORD", model: "F150", year: 2014, numberOfAccidents: 1, numberOfOwners: 3),
@@ -42,13 +46,13 @@ class PricingEngineSpec extends Specification {
         when:
             Assessment assessment = pricingEngine.assess(assessedVehicle, listings)
         then:
-            assessment.suggestedPrice == 5000
+            assessment.suggestedPrice == 5750
             assessment.assessedVehicle == assessedVehicle
             assessment.comparables.size() == 2
             assessment.comparables[0].comparable == listings[1]
             assessment.comparables[0].priceDifferenceFromAssessed == 0
             assessment.comparables[1].comparable == listings[3]
-            assessment.comparables[1].priceDifferenceFromAssessed == 0
+            assessment.comparables[1].priceDifferenceFromAssessed == -1500
     }
 
     def "no valid comparables"() {
