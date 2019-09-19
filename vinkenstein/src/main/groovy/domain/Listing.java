@@ -1,6 +1,7 @@
 package domain;
 
 public class Listing extends AssessedVehicle {
+
     public void setVin(String vin) {
         this.vin = vin;
     }
@@ -16,9 +17,6 @@ public class Listing extends AssessedVehicle {
 
     private int price;
 
-
-
-
     public Listing() {
 
     }
@@ -32,7 +30,5 @@ public class Listing extends AssessedVehicle {
         this.price = price;
         this.numberOfAccidents = numberOfAccidents;
     }
-
-
 
 }

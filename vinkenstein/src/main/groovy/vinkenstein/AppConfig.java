@@ -7,10 +7,11 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class AppConfig {
-    @Bean String remoteServerHostname() {
-        return "A-TD1EMGTFM"; //"localhost";
 
-    } ;
+    @Bean
+    String remoteServerHostname() {
+        return "localhost"; //"localhost";
+    }
 
     @Bean
     ThirdPartyClient thirdPartyClient() {
@@ -24,6 +25,7 @@ public class AppConfig {
 
     @Bean
     ListingsClient listingsClient(RestTemplate restTemplate, String remoteServerHostname) {
-        return new ListingsClient("http://"+remoteServerHostname+":8091", restTemplate);
+        return new ListingsClient("http://" + remoteServerHostname + ":8091", restTemplate);
     }
+
 }

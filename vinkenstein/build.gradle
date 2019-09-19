@@ -4,21 +4,12 @@ ext {
     gebVersion = "3.0.1"
 }
 
-bootJar {
-    baseName = 'vinkenstein'
-    version =  '0.1.0'
-}
-
-
 dependencies {
     implementation "org.codehaus.groovy:groovy-all:2.5.7"
-    testCompile "org.spockframework:spock-core:1.3-groovy-2.5"
-    //testCompile "org.gebish:geb-spock:${gebVersion}"
-    //testCompile "org.seleniumhq.selenium:selenium-firefox-driver:${seleniumVersion}"
-    testCompile "org.gebish:geb-core:${gebVersion}"
-    testCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:2.24.1"
+    testImplementation "org.spockframework:spock-core:1.3-groovy-2.5"
+    testImplementation "org.gebish:geb-core:${gebVersion}"
+    testImplementation "org.seleniumhq.selenium:selenium-htmlunit-driver:2.24.1"
     testRuntime "org.seleniumhq.selenium:selenium-support:2.24.1"
-
 }
 
 test {

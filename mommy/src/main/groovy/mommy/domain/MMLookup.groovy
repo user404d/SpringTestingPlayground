@@ -1,9 +1,10 @@
 package mommy.domain
 
 import groovy.json.JsonSlurper
+import org.springframework.core.io.ClassPathResource
 
 class MMLookup {
-    static def makes = new JsonSlurper().parse(new File('mommy/src/main/resources/data.json'))
+    static def makes = new JsonSlurper().parse(new ClassPathResource("/data.json").getFile())
 
     static String getMake(String vin) {
         if (vin.length() < 3) {

@@ -4,13 +4,11 @@ buildscript {
     dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") }
 }
 
-allprojects {
+subprojects {
 
     ext { springBootVersion = '2.1.6.RELEASE' }
 
     apply plugin: 'java'
-    apply plugin: 'eclipse'
-    apply plugin: 'idea'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
 
@@ -33,9 +31,8 @@ allprojects {
         compile("org.springframework.boot:spring-boot-starter-web")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
+}
 
-    task wrapper(type: Wrapper) {
-        gradleVersion = '4.6'
-    }
-
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.6'
 }

@@ -1,11 +1,11 @@
-package listings
+package history
 
 import groovy.json.JsonSlurper
-import listings.domain.History
+import history.domain.History
+import org.springframework.core.io.ClassPathResource
 
 class TestListings {
-    static def histories = new JsonSlurper().parse(new File('history/src/main/resources/history.json'))
-
+    static def histories = new JsonSlurper().parse(new ClassPathResource("/history.json").getFile())
 
     static Map<String, History> dataset = [
             'WBSBG9321VEY74382': new History(vin: 'WBSBG9321VEY74382',  numberOfOwners: 2,   numberOfAccidents: 12),

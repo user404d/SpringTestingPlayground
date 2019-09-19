@@ -1,4 +1,4 @@
-package listings.domain
+package history.domain
 
 class History {
     String vin

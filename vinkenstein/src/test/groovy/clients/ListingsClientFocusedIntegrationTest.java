@@ -19,6 +19,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class)
 public class ListingsClientFocusedIntegrationTest {
+
     @Autowired
     ListingsClient listingsClient;
 
@@ -34,7 +35,7 @@ public class ListingsClientFocusedIntegrationTest {
         newListing.setPrice(44999);
         listingsClient.delete(newListing.getVin());
         List<Listing> listings = listingsClient.getListings();
-        assertFalse(listings.stream().filter(listing -> "1N4AL11E26N343129".equals(listing.getVin())).findAny().isPresent());
+        assertFalse(listings.stream().anyMatch(listing -> "1N4AL11E26N343129".equals(listing.getVin())));
         listingsClient.add(newListing);
         List<Listing> listingsAfter = listingsClient.getListings();
         assertEquals(44999, listingsAfter.stream().filter(listing -> "1N4AL11E26N343129".equals(listing.getVin())).findAny().get().getPrice());
@@ -52,6 +53,6 @@ public class ListingsClientFocusedIntegrationTest {
         listingsClient.add(newListing2);
         listingsClient.removeAllListings();
         assertEquals(0, listingsClient.getListings().size());
-
     }
+
 }
