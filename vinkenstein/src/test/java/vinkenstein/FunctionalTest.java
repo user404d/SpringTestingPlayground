@@ -61,6 +61,9 @@ public class FunctionalTest {
     }
 
     private void givenVinHasMakeModelYear(String vin, String make, String model, int year) {
+        //ideally, we would stub all the data on the server,
+        //but since we don't have control of it, at least we can
+        //check our preconditions
         Listing accordingToMommy = restTemplate.getForObject("http://"+remoteServerHostname+":8092/mommy?vin=" + vin, Listing.class);
         assertEquals(make, accordingToMommy.getMake());
         assertEquals(model, accordingToMommy.getModel());
@@ -75,7 +78,7 @@ public class FunctionalTest {
     }
 
     public void givenNoMakeModelForSale(String make, String model) {
-        //listingsClient.removeAllListings();
+        //listingsClient.removeAllListings(); <-- this would interfere with other users of the resource
         List<Listing> listings = listingsClient.getListings();
         for (Listing listing : listings) {
             Listing accordingToMommy = restTemplate.getForObject("http://"+remoteServerHostname+":8092/mommy?vin=" + listing.getVin(), Listing.class);
@@ -90,7 +93,7 @@ public class FunctionalTest {
         listing.setVin(vin);
         listing.setPrice(price);
         listingsClient.add(listing);
-        listingsToCleanup.add(listing);
+        listingsToCleanup.add(listing); //leave no trash behind
     }
 
     public void thenAssessedPrice(int expectedPrice) {
