@@ -5,7 +5,7 @@ import history.domain.History
 import org.springframework.core.io.ClassPathResource
 
 class TestListings {
-    static def histories = new JsonSlurper().parse(new ClassPathResource("/history.json").getFile())
+    static def histories = new JsonSlurper().parse(new ClassPathResource("/history.json").getInputStream())
 
     static Map<String, History> dataset = [
             'WBSBG9321VEY74382': new History(vin: 'WBSBG9321VEY74382',  numberOfOwners: 2,   numberOfAccidents: 12),

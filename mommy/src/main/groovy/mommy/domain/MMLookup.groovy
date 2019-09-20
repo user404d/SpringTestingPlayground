@@ -4,7 +4,7 @@ import groovy.json.JsonSlurper
 import org.springframework.core.io.ClassPathResource
 
 class MMLookup {
-    static def makes = new JsonSlurper().parse(new ClassPathResource("/data.json").getFile())
+    static def makes = new JsonSlurper().parse(new ClassPathResource("/data.json").getInputStream())
 
     static String getMake(String vin) {
         if (vin.length() < 3) {
