@@ -7,6 +7,6 @@ dependencies {
 }
 
 bootJar {
-    baseName = 'listings'
-    version =  '0.1.0'
+    mainClassName = 'listings.ListingsApp'
 }
+

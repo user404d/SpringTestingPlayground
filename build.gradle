@@ -1,7 +1,11 @@
 buildscript {
     ext { springBootVersion = '2.1.6.RELEASE' }
-    repositories { mavenCentral() }
-    dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 subprojects {
@@ -26,11 +30,16 @@ subprojects {
         }
     }
 
+    jar {
+        enabled = true
+    }
+
     dependencies {
         developmentOnly("org.springframework.boot:spring-boot-devtools")
         compile("org.springframework.boot:spring-boot-starter-web")
         testCompile("org.springframework.boot:spring-boot-starter-test")
     }
+
 }
 
 task wrapper(type: Wrapper) {

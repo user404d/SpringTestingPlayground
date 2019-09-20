@@ -6,3 +6,7 @@ dependencies {
     implementation 'org.codehaus.groovy:groovy-all:2.4.15'
 }
 
+bootJar {
+    mainClassName = 'mommy.MommyApp'
+}
+

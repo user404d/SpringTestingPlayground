@@ -15,3 +15,8 @@ dependencies {
 test {
     systemProperties "geb.build.reportsDir": "$reportsDir/geb"
 }
+
+bootJar {
+    mainClassName = 'vinkenstein.VinkensteinApp'
+}
+

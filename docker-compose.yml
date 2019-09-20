@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  history:
+    image: openjdk:8-jre-alpine
+    ports:
+      - 8093:8093
+    volumes:
+      - "./history/build/libs/history.jar:/usr/src/app.jar:ro"
+    command: ["java", "-jar", "/usr/src/app.jar"]
+  listings:
+    image: openjdk:8-jre-alpine
+    ports:
+      - 8091:8091
+    volumes:
+      - "./listings/build/libs/listings.jar:/usr/src/app.jar:ro"
+    command: ["java", "-jar", "/usr/src/app.jar"]
+  mommy:
+    image: openjdk:8-jre-alpine
+    ports:
+      - 8092:8092
+    volumes:
+      - "./mommy/build/libs/mommy.jar:/usr/src/app.jar:ro"
+    command: ["java", "-jar", "/usr/src/app.jar"]
